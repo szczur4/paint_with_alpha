@@ -22,7 +22,7 @@ public class right extends scalingBox implements MouseListener,MouseMotionListen
 		if(moved){
 			Main.editor.width=(int)(lastX/multiplier)+width;
 			Main.editor.setSize((int)(((int)(lastX/multiplier)+width)*multiplier),(int)(Main.editor.height*multiplier));
-			Main.editor.updateLocations();
+			Main.editor.resizeImage();
 		}
 		setCursor(Cursor.getDefaultCursor());
 		pressed=false;

@@ -11,13 +11,13 @@ public class previousColor extends JButton{
 	public int id;
 	public previousColor(){
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			if(Main.colorController.secondary)Main.editor.secondary=color;
+			if(Main.colorCore.secondary)Main.editor.secondary=color;
 			else Main.editor.primary=color;
-			Main.colorController.colorDisplay.repaint();
-			Main.colorController.channels[0].setText(color.getRed()+"");
-			Main.colorController.channels[1].setText(color.getGreen()+"");
-			Main.colorController.channels[2].setText(color.getBlue()+"");
-			Main.colorController.channels[3].setText(color.getAlpha()+"");
+			Main.colorCore.colorDisplay.repaint();
+			Main.colorCore.channels[0].setText(color.getRed()+"");
+			Main.colorCore.channels[1].setText(color.getGreen()+"");
+			Main.colorCore.channels[2].setText(color.getBlue()+"");
+			Main.colorCore.channels[3].setText(color.getAlpha()+"");
 		}});
 		setBorder(Main.border);
 		setSize(16,16);

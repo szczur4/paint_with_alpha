@@ -4,9 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import szczur4.fileManager.file;
 import szczur4.scalingBoxes.corner;
 import szczur4.scalingBoxes.down;
 import szczur4.scalingBoxes.right;
@@ -31,63 +33,115 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	public final right right=new right();
 	public final corner corner=new corner();
 	public final down down=new down();
-	public int zoom=7,width=64,height=64,toolId,x1,y1,x2,y2,mouseX,mouseY,button;
+	public int zoom=7,width=100,height=48,toolId,x1,y1,x2,y2,mouseX,mouseY,button,fileId;
 	public float multiplier;
 	public final float[]scales={8,7,6,5,4,3,2,1,0.5f,0.25f,0.125f};
 	public boolean grid,pressed;
 	public Color primary=new Color(0x0,true),secondary=new Color(0x0,true);
-	public BufferedImage image=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+	public ArrayList<File>files=new ArrayList<>();
+	public ArrayList<BufferedImage>images=new ArrayList<>();
 	public final BufferedImage background=ImageIO.read(Objects.requireNonNull(Main.class.getResource("background.png")));
+	public AbstractAction openFile=new AbstractAction("openFile"){@Override public void actionPerformed(ActionEvent e){
+		Main.opener.setVisible(true);
+		File[]tmp=Main.opener.getFiles();
+		for(File file:tmp){
+			files.add(file);
+			try{
+				images.add(ImageIO.read(files.getLast()));
+				width=images.getLast().getWidth();
+				height=images.getLast().getHeight();
+				updateLocations();
+				setSize((int)(width*multiplier),(int)(height*multiplier));
+			}catch(Exception ex){
+				System.err.println("no file found");
+				files.removeLast();
+				continue;
+			}
+			fileId=images.size()-1;
+			Main.fileCore.files.files.add(new file(fileId));
+		}
+		Main.fileCore.updateUI();
+		updateLocations();
+	}},saveFile=new AbstractAction("saveFile"){@Override public void actionPerformed(ActionEvent e){
+		try{ImageIO.write(images.get(fileId),"png",files.get(fileId));}catch(Exception ex){System.err.println("no file found");}
+		System.out.println("saved to "+files.get(fileId).getAbsolutePath());
+	}};
+	JButton openButton=new JButton(openFile),newButton=new JButton(/*new AbstractAction("newFile"){@Override public void actionPerformed(ActionEvent e){images.add(new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB));}}*/);
+	JLabel info=new JLabel("No files open");
 	final InputMap inputMap=getInputMap(WHEN_IN_FOCUSED_WINDOW);
 	final ActionMap actionMap=getActionMap();
-	File file;
 	editor()throws Exception{
 		robot=new Robot();
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK),"save");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK),"open");
-		actionMap.put("save",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			try{ImageIO.write(image,"png",file);}catch(Exception ex){System.err.println("no file found");}
-			System.out.println("saved to "+file.getAbsolutePath());
-		}});
-		actionMap.put("open",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			Main.opener.setVisible(true);
-			file=new File(Main.opener.getDirectory()+Main.opener.getFile());
-			try{
-				image=ImageIO.read(file);
-				width=image.getWidth();
-				height=image.getHeight();
-				updateLocations();
-				setSize((int)(width*multiplier),(int)(height*multiplier));
-			}catch(Exception ex){System.err.println("no file found");}
-			updateLocations();
-		}});
+		actionMap.put("save",saveFile);
+		actionMap.put("open",openFile);
+		info.setHorizontalAlignment(SwingConstants.CENTER);
+		info.setVerticalAlignment(SwingConstants.CENTER);
+		info.setForeground(Main.fore);
+		info.setBackground(Main.back);
+		info.setBounds(0,0,width,height>>1);
+		openButton.setText("Open");
+		openButton.setBackground(Main.back);
+		openButton.setForeground(Main.fore);
+		openButton.setBorder(Main.border);
+		openButton.setFocusable(false);
+		openButton.setBounds(5,24,48,20);
 		setLayout(null);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		setBounds(5,48,width,height);
+		setBounds(5,68,width,height);
+		setBackground(Main.back);
+		setBorder(Main.border);
+		add(info);
+		add(openButton);
+		add(newButton);
 		multiplier=scales[zoom];
-		updateLocations();
 		Main.frame.add(right);
 		Main.frame.add(corner);
 		Main.frame.add(down);
 		thread.start();
 	}
+	public void resizeImage(){
+		BufferedImage tmp=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+		tmp.getGraphics().drawImage(images.get(fileId),0,0,null);
+		images.set(fileId,tmp);
+		updateLocations();
+	}
 	public void updateLocations(){
 		float multiplier=scales[zoom];
-		right.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier/2)-3+48);
-		corner.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier)-1+48);
-		down.setLocation((int)(width*multiplier/2)-3+5,(int)(height*multiplier)-1+48);
-		BufferedImage tmp=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
-		tmp.getGraphics().drawImage(image,0,0,null);
-		image=tmp;
+		width=images.get(fileId).getWidth();
+		height=images.get(fileId).getHeight();
+		setSize((int)(width*multiplier),(int)(height*multiplier));
+		right.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier/2)-3+48+19);
+		corner.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier)-1+48+19);
+		down.setLocation((int)(width*multiplier/2)-3+5,(int)(height*multiplier)-1+48+19);
+		removeStarterThings();
+	}
+	public void removeStarterThings(){
+		info.setVisible(false);
+		openButton.setVisible(false);
+		newButton.setVisible(false);
+		setBorder(null);
+	}
+	public void addStarterThings(){
+		right.setLocation(-10,-10);
+		corner.setLocation(-10,-10);
+		down.setLocation(-10,-10);
+		setSize(100,48);
+		info.setVisible(true);
+		openButton.setVisible(true);
+		newButton.setVisible(true);
+		setBorder(Main.border);
 	}
 	public void paint(Graphics graphics){
 		Graphics2D g=(Graphics2D)graphics;
 		super.paint(g);
+		if(images.isEmpty())return;
 		int wr=(int)(width*(multiplier+1)/48);
 		int hr=(int)(height*(multiplier+1))>>5;
 		for(int y=0;y<hr+1;y++)for(int x=0;x<wr+1;x++)g.drawImage(background,x*48,y<<5,null);
-		g.drawImage(image,0,0,(int)(width*multiplier),(int)(height*multiplier),null);
+		g.drawImage(images.get(fileId),0,0,(int)(width*multiplier),(int)(height*multiplier),null);
 		if(grid){
 			int tmp=(int)ceil(multiplier);
 			if(tmp<3)tmp=4;

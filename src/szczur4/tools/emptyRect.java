@@ -5,7 +5,7 @@ import szczur4.Main;
 
 public class emptyRect{
 	public void execute(int x1,int y1,int x2,int y2,Color c){
-		Graphics2D g=(Graphics2D)Main.editor.image.getGraphics();
+		Graphics2D g=(Graphics2D)Main.editor.images.get(Main.editor.fileId).getGraphics();
 		g.setColor(c);
 		g.draw(rect.execute(x1,y1,x2,y2));
 	}

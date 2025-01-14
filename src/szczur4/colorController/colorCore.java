@@ -7,7 +7,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import szczur4.Main;
 
-public class colorController extends JPanel implements CaretListener{
+public class colorCore extends JPanel implements CaretListener{
 	Robot robot;
 	public final Border yellow=new LineBorder(Color.yellow);
 	public final colorDisplay colorDisplay=new colorDisplay();
@@ -46,9 +46,9 @@ public class colorController extends JPanel implements CaretListener{
 	}});
 	public final previousColor[]previousColors=new previousColor[8];
 	final CompoundBorder border=new CompoundBorder(Main.border,new EmptyBorder(-1,1,1,1));
-	public colorController()throws Exception{
+	public colorCore()throws Exception{
 		robot=new Robot();
-		setBounds(0,0,245,43);
+		setBounds(0,19,245,43);
 		setBorder(Main.border);
 		setBackground(Main.back);
 		setLayout(null);

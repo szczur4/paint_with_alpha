@@ -22,7 +22,7 @@ public class down extends scalingBox implements MouseListener,MouseMotionListene
 		if(moved){
 			Main.editor.height=(int)(lastY/multiplier)+height;
 			Main.editor.setSize((int)(Main.editor.width*multiplier),(int)(((int)(lastY/multiplier)+height)*multiplier));
-			Main.editor.updateLocations();
+			Main.editor.resizeImage();
 		}
 		setCursor(Cursor.getDefaultCursor());
 		pressed=false;

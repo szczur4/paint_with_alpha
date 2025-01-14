@@ -12,7 +12,7 @@ public class fill{
 	BufferedImage tmp;
 	final Queue<Point>queue=new ArrayDeque<>();
 	public void execute(int x,int y,Color c){
-		tmp=Main.editor.image;
+		tmp=Main.editor.images.get(Main.editor.fileId);
 		width=Main.editor.width;
 		height=Main.editor.height;
 		visited=new boolean[width][height];
@@ -42,6 +42,6 @@ public class fill{
 				if(!queue.contains(p))queue.add(p);
 			}
 		}
-		Main.editor.image=tmp;
+		Main.editor.images.set(Main.editor.fileId,tmp);
 	}
 }

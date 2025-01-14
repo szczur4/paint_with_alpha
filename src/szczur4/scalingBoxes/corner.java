@@ -24,7 +24,7 @@ public class corner extends scalingBox implements MouseListener,MouseMotionListe
 			Main.editor.width=(int)(lastX/multiplier)+width;
 			Main.editor.height=(int)(lastY/multiplier)+height;
 			Main.editor.setSize((int)(((int)(lastX/multiplier)+width)*multiplier),(int)(((int)(lastY/multiplier)+height)*multiplier));
-			Main.editor.updateLocations();
+			Main.editor.resizeImage();
 		}
 		setCursor(Cursor.getDefaultCursor());
 		pressed=false;

@@ -13,7 +13,7 @@ public class toolBar extends JPanel{
 	ImageIcon gridOn,gridOff;
 	toolBar(){
 		setBorder(Main.border);
-		setBounds(248,0,96,43);
+		setBounds(243,19,97,43);
 		setBackground(Main.back);
 		setLayout(null);
 		for(int i=0;i<10;i++){
@@ -22,7 +22,7 @@ public class toolBar extends JPanel{
 				fixBorder(I);
 				Main.editor.toolId=I;
 			}});
-			tools[i].setBounds(4+(i%5)*18,5+(i/5)*18,16,16);
+			tools[i].setBounds(5+(i%5)*18,5+(i/5)*18,16,16);
 			tools[i].setBorder(Main.border);
 			tools[i].setBackground(Main.back);
 			tools[i].setForeground(Main.fore);
