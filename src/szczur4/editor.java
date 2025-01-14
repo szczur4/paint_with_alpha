@@ -65,8 +65,29 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	}},saveFile=new AbstractAction("saveFile"){@Override public void actionPerformed(ActionEvent e){
 		try{ImageIO.write(images.get(fileId),"png",files.get(fileId));}catch(Exception ex){System.err.println("no file found");}
 		System.out.println("saved to "+files.get(fileId).getAbsolutePath());
+	}},saveAs=new AbstractAction("saveAs"){@Override public void actionPerformed(ActionEvent e){
+		Main.saver.setVisible(true);
+		File tmp=Main.saver.getFiles()[0];
+		try{
+			String s=tmp.getAbsolutePath();
+			if(!s.substring(s.length()-4,s.length()-1).equals(".png"))tmp=new File(s+".png");
+			if(tmp.createNewFile())System.out.println("created: "+tmp.getAbsolutePath());
+			BufferedImage tmpImg=new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+			ImageIO.write(tmpImg,"png",tmp);
+			images.add(ImageIO.read(tmp));
+			width=images.getLast().getWidth();
+			height=images.getLast().getHeight();
+		}catch(Exception ex){
+			System.err.println("no file found");
+			return;
+		}
+		files.add(tmp);
+		fileId=images.size()-1;
+		Main.fileCore.files.files.add(new file(fileId));
+		Main.fileCore.updateUI();
+		updateLocations();
 	}};
-	JButton openButton=new JButton(openFile),newButton=new JButton(/*new AbstractAction("newFile"){@Override public void actionPerformed(ActionEvent e){images.add(new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB));}}*/);
+	JButton openButton=new JButton(openFile),newButton=new JButton(saveAs);
 	JLabel info=new JLabel("No files open");
 	final InputMap inputMap=getInputMap(WHEN_IN_FOCUSED_WINDOW);
 	final ActionMap actionMap=getActionMap();
@@ -74,8 +95,10 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		robot=new Robot();
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK),"save");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK),"open");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),"new");
 		actionMap.put("save",saveFile);
 		actionMap.put("open",openFile);
+		actionMap.put("new",saveAs);
 		info.setHorizontalAlignment(SwingConstants.CENTER);
 		info.setVerticalAlignment(SwingConstants.CENTER);
 		info.setForeground(Main.fore);
@@ -86,7 +109,13 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		openButton.setForeground(Main.fore);
 		openButton.setBorder(Main.border);
 		openButton.setFocusable(false);
-		openButton.setBounds(5,24,48,20);
+		openButton.setBounds(4,24,44,20);
+		newButton.setText("New");
+		newButton.setBackground(Main.back);
+		newButton.setForeground(Main.fore);
+		newButton.setBorder(Main.border);
+		newButton.setFocusable(false);
+		newButton.setBounds(52,24,44,20);
 		setLayout(null);
 		addMouseListener(this);
 		addMouseMotionListener(this);

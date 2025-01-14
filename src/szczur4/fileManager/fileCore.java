@@ -63,14 +63,16 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 			files.width=(files.files.size())<<7;
 			files.setSize(files.width+130,18);
 			if(files.width>width){
-				setLocation(11,0);
-				setSize(width-23,20);
+				setLocation(12,0);
+				files.setLocation(0,1);
+				setSize(width-24,20);
 				addMouseWheelListener(this);
 				left.setVisible(true);
 				right.setVisible(true);
 			}
 			else{
 				setLocation(0,0);
+				files.setLocation(1,1);
 				setSize(width,20);
 				removeMouseWheelListener(this);
 				left.setVisible(false);
@@ -86,7 +88,8 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 	@Override public void componentMoved(ComponentEvent ev){}
 	@Override public void componentShown(ComponentEvent ev){}
 	@Override public void componentHidden(ComponentEvent ev){}
-	@Override public void mouseWheelMoved(MouseWheelEvent e){
-
+	@Override public void mouseWheelMoved(MouseWheelEvent ev){
+		x-=ev.getWheelRotation()<<4;
+		fixLocation();
 	}
 }

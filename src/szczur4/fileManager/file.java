@@ -11,6 +11,7 @@ public class file extends JButton{
 		Main.fileCore.files.id=id;
 		SwingUtilities.invokeLater(Main.fileCore.files.close);
 	}});
+	JLabel name=new JLabel("");
 	public file(int n){
 		id=n;
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
@@ -23,11 +24,17 @@ public class file extends JButton{
 		setBackground(Main.back);
 		setForeground(Main.fore);
 		setFocusable(false);
-		setText(Main.editor.files.get(id).getName());
+		name.setBounds(18,0,110,18);
+		name.setBackground(Main.back);
+		name.setForeground(Main.fore);
+		name.setText(Main.editor.files.get(id).getName());
 		close.setBackground(Main.medium);
 		close.setBounds(0,0,18,18);
 		close.setBorder(null);
 		close.setIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("/szczur4/icons/close.png"))));
+		close.setFocusable(false);
+		add(name);
 		add(close);
+
 	}
 }
