@@ -34,6 +34,7 @@ public class down extends scalingBox implements MouseListener,MouseMotionListene
 		moved=true;
 		multiplier=Main.editor.scales[Main.editor.zoom];
 		lastY=ev.getY();
+		Main.infoBar.h=(int)(lastY/multiplier)+height;
 	}
 	@Override public void mouseMoved(MouseEvent ev){}
 }

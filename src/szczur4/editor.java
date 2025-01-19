@@ -14,8 +14,6 @@ import szczur4.scalingBoxes.down;
 import szczur4.scalingBoxes.right;
 import szczur4.tools.*;
 
-import static java.lang.Math.ceil;
-
 public class editor extends JPanel implements MouseListener,MouseMotionListener,MouseWheelListener,Runnable{
 	/// tools --------------------
 	final fill fill=new fill();
@@ -33,10 +31,10 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	public final right right=new right();
 	public final corner corner=new corner();
 	public final down down=new down();
-	public int zoom=7,width=100,height=48,toolId,x1,y1,x2,y2,mouseX,mouseY,button,fileId;
+	public int zoom=7,width=100,height=48,toolId,x1,y1,x2,y2,mouseX,mouseY,button,fileId,strokeSize=1;
 	public float multiplier;
-	public final float[]scales={8,7,6,5,4,3,2,1,0.5f,0.25f,0.125f};
-	public boolean grid,pressed;
+	public float[]scales={8,7,6,5,4,3,2,1,0.5F,0.25F,0.125F};
+	public boolean grid,pressed,selecting=true,selected,listenForMouse;
 	public Color primary=new Color(0x0,true),secondary=new Color(0x0,true);
 	public ArrayList<File>files=new ArrayList<>();
 	public ArrayList<BufferedImage>images=new ArrayList<>();
@@ -44,19 +42,22 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	public AbstractAction openFile=new AbstractAction("openFile"){@Override public void actionPerformed(ActionEvent e){
 		Main.opener.setVisible(true);
 		File[]tmp=Main.opener.getFiles();
+		if(tmp.length==0)return;
 		for(File file:tmp){
-			files.add(file);
-			try{
-				images.add(ImageIO.read(files.getLast()));
-				width=images.getLast().getWidth();
-				height=images.getLast().getHeight();
-				updateLocations();
-				setSize((int)(width*multiplier),(int)(height*multiplier));
-			}catch(Exception ex){
-				System.err.println("no file found");
-				files.removeLast();
+			if(!file.exists()){
+				System.err.println(file.getName()+" does not exist");
 				continue;
 			}
+			if(!file.getName().substring(file.getName().lastIndexOf(".")+1).equalsIgnoreCase("png")){
+				System.err.println("wrong extension");
+				continue;
+			}
+			files.add(file);
+			try{images.add(ImageIO.read(files.getLast()));}catch(Exception ignored){}
+			width=images.getLast().getWidth();
+			height=images.getLast().getHeight();
+			updateLocations();
+			setSize((int)(width*multiplier),(int)(height*multiplier));
 			fileId=images.size()-1;
 			Main.fileCore.files.files.add(new file(fileId));
 		}
@@ -70,7 +71,7 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		File tmp=Main.saver.getFiles()[0];
 		try{
 			String s=tmp.getAbsolutePath();
-			if(!s.substring(s.length()-4,s.length()-1).equals(".png"))tmp=new File(s+".png");
+			if(!s.startsWith(".png",s.length()-4))tmp=new File(s+".png");
 			if(tmp.createNewFile())System.out.println("created: "+tmp.getAbsolutePath());
 			BufferedImage tmpImg=new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
 			ImageIO.write(tmpImg,"png",tmp);
@@ -89,16 +90,16 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	}};
 	JButton openButton=new JButton(openFile),newButton=new JButton(saveAs);
 	JLabel info=new JLabel("No files open");
-	final InputMap inputMap=getInputMap(WHEN_IN_FOCUSED_WINDOW);
-	final ActionMap actionMap=getActionMap();
+	final InputMap in=getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	final ActionMap am=getActionMap();
 	editor()throws Exception{
 		robot=new Robot();
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK),"save");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK),"open");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),"new");
-		actionMap.put("save",saveFile);
-		actionMap.put("open",openFile);
-		actionMap.put("new",saveAs);
+		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK),"save");
+		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK),"open");
+		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),"new");
+		am.put("save",saveFile);
+		am.put("open",openFile);
+		am.put("new",saveAs);
 		info.setHorizontalAlignment(SwingConstants.CENTER);
 		info.setVerticalAlignment(SwingConstants.CENTER);
 		info.setForeground(Main.fore);
@@ -117,14 +118,14 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		newButton.setFocusable(false);
 		newButton.setBounds(52,24,44,20);
 		setLayout(null);
-		addMouseListener(this);
-		addMouseMotionListener(this);
 		setBounds(5,68,width,height);
 		setBackground(Main.back);
 		setBorder(Main.border);
 		add(info);
 		add(openButton);
 		add(newButton);
+		addMouseListener(this);
+		addMouseMotionListener(this);
 		multiplier=scales[zoom];
 		Main.frame.add(right);
 		Main.frame.add(corner);
@@ -138,20 +139,23 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		updateLocations();
 	}
 	public void updateLocations(){
-		float multiplier=scales[zoom];
+		multiplier=scales[zoom];
 		width=images.get(fileId).getWidth();
 		height=images.get(fileId).getHeight();
 		setSize((int)(width*multiplier),(int)(height*multiplier));
-		right.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier/2)-3+48+19);
-		corner.setLocation((int)(width*multiplier)-1+5,(int)(height*multiplier)-1+48+19);
-		down.setLocation((int)(width*multiplier/2)-3+5,(int)(height*multiplier)-1+48+19);
+		right.setLocation((int)((width*multiplier)+4),(int)((height*multiplier)/2+45+19));
+		corner.setLocation((int)((width*multiplier)+4),(int)((height*multiplier)+47+19));
+		down.setLocation((int)((width*multiplier)/2+2),(int)((height*multiplier)+47+19));
 		removeStarterThings();
+		Main.infoBar.w=width;
+		Main.infoBar.h=height;
 	}
 	public void removeStarterThings(){
 		info.setVisible(false);
 		openButton.setVisible(false);
 		newButton.setVisible(false);
 		setBorder(null);
+		listenForMouse=true;
 	}
 	public void addStarterThings(){
 		right.setLocation(-10,-10);
@@ -162,6 +166,7 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		openButton.setVisible(true);
 		newButton.setVisible(true);
 		setBorder(Main.border);
+		listenForMouse=false;
 	}
 	public void paint(Graphics graphics){
 		Graphics2D g=(Graphics2D)graphics;
@@ -172,11 +177,11 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		for(int y=0;y<hr+1;y++)for(int x=0;x<wr+1;x++)g.drawImage(background,x*48,y<<5,null);
 		g.drawImage(images.get(fileId),0,0,(int)(width*multiplier),(int)(height*multiplier),null);
 		if(grid){
-			int tmp=(int)ceil(multiplier);
-			if(tmp<3)tmp=4;
+			float tmp=multiplier;
+			if(tmp<2)tmp=2;
 			g.setColor(Color.black);
-			for(int x=0;x<width;x++)g.drawLine(x*tmp,0,x*tmp,height*tmp);
-			for(int y=0;y<height;y++)g.drawLine(0,y*tmp,width*tmp,y*tmp);
+			for(int x=0;x<width;x++)g.drawLine((int)(x*tmp),0,(int)(x*tmp),(int)(height*tmp));
+			for(int y=0;y<height;y++)g.drawLine(0,(int)(y*tmp),(int)(width*tmp),(int)(y*tmp));
 		}
 		BufferedImage tmpImage=new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
 		Graphics2D tmp=null;
@@ -234,43 +239,68 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 				}
 			}
 		}
+		if(selected){
+			int X=(int)(Main.selection.x*multiplier),Y=(int)(Main.selection.y*multiplier),W=(int)(Main.selection.w*multiplier),H=(int)(Main.selection.h*multiplier);
+			g.clip(new Rectangle((int)(Main.selection.x1*multiplier),(int)(Main.selection.y1*multiplier),W,H));
+			for(int y=0;y<=hr;y++)for(int x=0;x<=wr;x++)g.drawImage(background,x*48,y<<5,null);
+			g.setClip(new Rectangle(0,0,(int)(width*multiplier),(int)(height*multiplier)));
+			g.drawImage(Main.selection.image,X,Y,W,H,null);
+			g.setColor(Color.black);
+			g.drawRect(X,Y,W,H);
+		}
 	}
 	@Override public void run(){while(thread.isAlive()){
 		repaint();
 		robot.delay(15);
 	}}
 	@Override public void mouseClicked(MouseEvent ev){
+		if(selecting||!listenForMouse)return;
 		int x=(int)(ev.getX()/multiplier),y=(int)(ev.getY()/multiplier);
 		button=ev.getButton();
 		Color tmp=null;
 		if(button==1)tmp=primary;
 		else if(button==3)tmp=secondary;
 		switch(toolId){
-			case(0)->pencil.execute(x,y,tmp);
+			case(0)->{
+				pencil.execute(x,y,tmp,images.get(fileId));
+				Main.selection.image=images.get(fileId);
+			}
 			case(1)->fill.execute(x,y,tmp);
 			case(2)->eraser.execute(x,y);
 			case(3)->colorExtractor.execute(x,y);
 		}
 	}
 	@Override public void mousePressed(MouseEvent ev){
+		if(!listenForMouse)return;
 		button=ev.getButton();
 		pressed=true;
 		mouseX=(int)(ev.getX()/multiplier);
 		mouseY=(int)(ev.getY()/multiplier);
-		switch(toolId){
-			case(4),(5),(6),(7),(8)->{
-				x1=(int)(ev.getX()/multiplier);
-				y1=(int)(ev.getY()/multiplier);
-			}
-		}
+		x1=mouseX;
+		y1=mouseY;
 	}
 	@Override public void mouseReleased(MouseEvent ev){
+		if(!listenForMouse)return;
 		pressed=false;
 		Color tmp=null;
 		if(button==1)tmp=primary;
 		else if(button==3)tmp=secondary;
+		if(selecting){
+			selecting=false;
+			selected=true;
+			int w=mouseX-x1,h=mouseY-y1;
+			if(w<0){
+				x1+=w;
+				w*=-1;
+			}
+			if(h<0){
+				y1+=h;
+				h*=-1;
+			}
+			Main.selection.select.execute(x1,y1,w,h);
+		}
 		switch(toolId){
-			case(4)->line.execute(x1,y1,x2,y2);
+			case(4)->line.execute(x1,y1,x2,y2,tmp);
 			case(5)->emptyRect.execute(x1,y1,x2,y2,tmp);
 			case(6)->fillRect.execute(x1,y1,x2,y2,tmp);
 			case(7)->emptyElipse.execute(x1,y1,x2,y2,tmp);
@@ -278,16 +308,20 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		}
 	}
 	@Override public void mouseEntered(MouseEvent ev){}
-	@Override public void mouseExited(MouseEvent ev){}
+	@Override public void mouseExited(MouseEvent ev){
+		Main.infoBar.mouse.setText("x: NaN, y: NaN");
+	}
 	@Override public void mouseDragged(MouseEvent ev){
+		if(!listenForMouse)return;
 		int x=(int)(ev.getX()/multiplier),y=(int)(ev.getY()/multiplier);
 		mouseX=x;
 		mouseY=y;
+		if(selecting)return;
 		Color tmp=null;
 		if(button==1)tmp=primary;
 		else if(button==3)tmp=secondary;
 		switch(toolId){
-			case(0)->pencil.execute(x,y,tmp);
+			case(0)->pencil.execute(x,y,tmp,images.get(fileId));
 			case(1)->fill.execute(x,y,tmp);
 			case(2)->eraser.execute(x,y);
 			case(3)->colorExtractor.execute(x,y);
@@ -298,16 +332,19 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		}
 	}
 	@Override public void mouseMoved(MouseEvent ev){
+		if(!listenForMouse)return;
 		mouseX=(int)(ev.getX()/multiplier);
 		mouseY=(int)(ev.getY()/multiplier);
+		Main.infoBar.mouse.setText("x: "+mouseX+", y: "+mouseY);
 	}
 	@Override public void mouseWheelMoved(MouseWheelEvent ev){
+		if(!listenForMouse)return;
 		if(ev.getModifiersEx()!=InputEvent.CTRL_DOWN_MASK)return;
 		if(ev.getWheelRotation()>0)zoom++;
 		else zoom--;
 		zoom=Math.max(Math.min(zoom,10),0);
 		multiplier=scales[zoom];
 		setSize((int)(width*multiplier),(int)(height*multiplier));
-		updateLocations();
+		try{updateLocations();}catch(Exception ignored){}
 	}
 }

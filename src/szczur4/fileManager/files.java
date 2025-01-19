@@ -23,13 +23,14 @@ public class files extends JPanel{
 		Main.editor.fileId=n;
 	}
 	Runnable close=()->{
-		fix(id);
 		Main.fileCore.files.files.remove(id);
 		Main.editor.images.remove(id);
 		Main.editor.files.remove(id);
 		if(Main.editor.images.isEmpty())id=0;
 		else id=Math.clamp(id,0,Main.editor.images.size()-1);
+		if(!Main.editor.images.isEmpty())fix(id);
 		Main.editor.fileId=id;
+		Main.editor.selected=false;
 		Main.fileCore.updateUI();
 	};
 }

@@ -20,6 +20,7 @@ public class previousColor extends JButton{
 			Main.colorCore.channels[3].setText(color.getAlpha()+"");
 		}});
 		setBorder(Main.border);
+		setFocusable(false);
 		setSize(16,16);
 		setIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("background.png"))));
 	}

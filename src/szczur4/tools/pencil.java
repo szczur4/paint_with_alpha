@@ -1,10 +1,10 @@
 package szczur4.tools;
 
 import java.awt.*;
-import szczur4.Main;
+import java.awt.image.*;
 
 public class pencil{
-	public void execute(int x,int y,Color c){
-		try{Main.editor.images.get(Main.editor.fileId).setRGB(x,y,c.getRGB());}catch(Exception ignored){}
+	public void execute(int x,int y,Color c,BufferedImage img){
+		try{img.setRGB(x,y,c.getRGB());}catch(Exception ignored){}
 	}
 }

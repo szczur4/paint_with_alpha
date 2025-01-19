@@ -13,6 +13,7 @@ public class colorExtractor{
 		}
 		for(int i=6;i>=0;i--)Main.colorCore.previousColors[i+1].color=Main.colorCore.previousColors[i].color;
 		Main.colorCore.previousColors[0].color=c;
+		setColor(c);
 		for(int i=0;i<8;i++)Main.colorCore.previousColors[i].repaint();
 	}
 	void setColor(Color c){

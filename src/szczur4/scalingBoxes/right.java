@@ -34,6 +34,7 @@ public class right extends scalingBox implements MouseListener,MouseMotionListen
 		moved=true;
 		multiplier=Main.editor.scales[Main.editor.zoom];
 		lastX=ev.getX();
+		Main.infoBar.w=(int)(lastX/multiplier)+width;
 	}
 	@Override public void mouseMoved(MouseEvent ev){}
 }

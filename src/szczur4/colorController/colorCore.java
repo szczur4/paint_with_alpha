@@ -7,7 +7,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import szczur4.Main;
 
-public class colorCore extends JPanel implements CaretListener{
+public class colorCore extends JPanel implements MouseListener,CaretListener{
 	Robot robot;
 	public final Border yellow=new LineBorder(Color.yellow);
 	public final colorDisplay colorDisplay=new colorDisplay();
@@ -70,6 +70,8 @@ public class colorCore extends JPanel implements CaretListener{
 			channels[i].setBounds(16+40*(i%3),5+18*(i/3),25,16);
 			channels[i].addCaretListener(this);
 			channels[i].setText("0");
+			channels[i].setFocusable(false);
+			channels[i].addMouseListener(this);
 			add(channels[i]);
 			labels[i].setBackground(Main.back);
 			labels[i].setForeground(Main.fore);
@@ -89,5 +91,14 @@ public class colorCore extends JPanel implements CaretListener{
 		else if(ev.getSource().equals(channels[2]))id=2;
 		else if(ev.getSource().equals(channels[3]))id=3;
 		SwingUtilities.invokeLater(fix);
+	}
+	@Override public void mouseClicked(MouseEvent ev){}
+	@Override public void mousePressed(MouseEvent ev){}
+	@Override public void mouseReleased(MouseEvent ev){}
+	@Override public void mouseEntered(MouseEvent ev){
+		ev.getComponent().setFocusable(true);
+	}
+	@Override public void mouseExited(MouseEvent ev){
+		ev.getComponent().setFocusable(false);
 	}
 }

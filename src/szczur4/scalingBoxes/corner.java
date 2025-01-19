@@ -37,6 +37,8 @@ public class corner extends scalingBox implements MouseListener,MouseMotionListe
 		multiplier=Main.editor.scales[Main.editor.zoom];
 		lastX=ev.getX();
 		lastY=ev.getY();
+		Main.infoBar.w=(int)(lastX/multiplier)+width;
+		Main.infoBar.h=(int)(lastY/multiplier)+height;
 	}
 	@Override public void mouseMoved(MouseEvent ev){}
 }

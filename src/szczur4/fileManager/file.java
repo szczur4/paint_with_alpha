@@ -35,6 +35,5 @@ public class file extends JButton{
 		close.setFocusable(false);
 		add(name);
 		add(close);
-
 	}
 }
