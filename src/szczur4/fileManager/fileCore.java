@@ -7,8 +7,8 @@ import szczur4.Main;
 
 public class fileCore extends JPanel implements ComponentListener,MouseWheelListener{
 	public int width,x;
-	JButton left,right;
-	public files files=new files();
+	final JButton left,right;
+	public final files files=new files();
 	public fileCore(){
 		setLocation(0,0);
 		setLayout(null);

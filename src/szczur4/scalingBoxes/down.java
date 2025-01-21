@@ -10,6 +10,7 @@ public class down extends scalingBox implements MouseListener,MouseMotionListene
 	float multiplier;
 	boolean moved,pressed;
 	public down(){
+		super(6);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
@@ -32,7 +33,7 @@ public class down extends scalingBox implements MouseListener,MouseMotionListene
 	@Override public void mouseExited(MouseEvent ev){if(!pressed)setCursor(Cursor.getDefaultCursor());}
 	@Override public void mouseDragged(MouseEvent ev){
 		moved=true;
-		multiplier=Main.editor.scales[Main.editor.zoom];
+		multiplier=Main.editor.multiplier;
 		lastY=ev.getY();
 		Main.infoBar.h=(int)(lastY/multiplier)+height;
 	}

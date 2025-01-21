@@ -23,8 +23,8 @@ public class toolBar extends JPanel implements MouseWheelListener{
 	final JLabel sizeLabel=new JLabel();
 	int cBId;
 	ImageIcon gridOn,gridOff;
-	invert invert=new invert();
-	replaceAll replaceAll=new replaceAll();
+	final invert invert=new invert();
+	final replaceAll replaceAll=new replaceAll();
 	toolBar(){
 		setBorder(Main.border);
 		setBounds(243,19,170,43);
@@ -46,10 +46,12 @@ public class toolBar extends JPanel implements MouseWheelListener{
 		}
 		fixBorder(0);
 		tools[9].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
+			if(Main.editor.images.isEmpty())return;
 			if(Main.editor.selected)invert.execute(Main.selection.image);
 			else invert.execute(Main.editor.images.get(Main.editor.fileId));
 		}});
 		tools[10].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
+			if(Main.editor.images.isEmpty())return;
 			if(Main.editor.selected)replaceAll.execute(Main.selection.image);
 			else replaceAll.execute(Main.editor.images.get(Main.editor.fileId));
 		}});

@@ -10,6 +10,7 @@ public class corner extends scalingBox implements MouseListener,MouseMotionListe
 	float multiplier;
 	boolean moved,pressed;
 	public corner(){
+		super(7);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
@@ -34,7 +35,7 @@ public class corner extends scalingBox implements MouseListener,MouseMotionListe
 	@Override public void mouseExited(MouseEvent ev){if(!pressed)setCursor(Cursor.getDefaultCursor());}
 	@Override public void mouseDragged(MouseEvent ev){
 		moved=true;
-		multiplier=Main.editor.scales[Main.editor.zoom];
+		multiplier=Main.editor.multiplier;
 		lastX=ev.getX();
 		lastY=ev.getY();
 		Main.infoBar.w=(int)(lastX/multiplier)+width;

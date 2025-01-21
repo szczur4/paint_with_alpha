@@ -3,7 +3,7 @@ package szczur4.selectionController;
 import szczur4.Main;
 
 public class select{
-	public void execute(int x,int y,int w,int h){
+	public void execute(int x,int y,int w,int h,int id){
 		try{
 			Main.selection.image=Main.editor.images.get(Main.editor.fileId).getSubimage(x,y,w,h);
 			Main.selection.x=x;
@@ -12,6 +12,7 @@ public class select{
 			Main.selection.y1=y;
 			Main.selection.w=w;
 			Main.selection.h=h;
+			Main.selection.id=id;
 		}catch(Exception ignored){}
 	}
 }

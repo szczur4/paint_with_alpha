@@ -6,7 +6,7 @@ import szczur4.Main;
 
 public class files extends JPanel{
 	int cBId,id,width;
-	public Vector<file>files=new Vector<>();
+	public final Vector<file>files=new Vector<>();
 	files(){
 		setLocation(1,1);
 		setBackground(Main.back);
@@ -22,13 +22,14 @@ public class files extends JPanel{
 		cBId=n;
 		Main.editor.fileId=n;
 	}
-	Runnable close=()->{
+	final Runnable close=()->{
 		Main.fileCore.files.files.remove(id);
 		Main.editor.images.remove(id);
 		Main.editor.files.remove(id);
 		if(Main.editor.images.isEmpty())id=0;
 		else id=Math.clamp(id,0,Main.editor.images.size()-1);
 		if(!Main.editor.images.isEmpty())fix(id);
+		else Main.editor.addStarterThings();
 		Main.editor.fileId=id;
 		Main.editor.selected=false;
 		Main.fileCore.updateUI();

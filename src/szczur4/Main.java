@@ -14,7 +14,7 @@ public class Main{
 	public static final Color back=new Color(0x171717),medium=new Color(0x3d3d3d),fore=new Color(0xb0b0b0);
 	public static final Border border=new LineBorder(fore,1);
 	public static final JFrame frame=new JFrame("paint with alpha v1.0-beta");
-	public static FileDialog opener=new FileDialog((Frame)null,"Open File",FileDialog.LOAD),saver=new FileDialog((Frame)null,"Save As",FileDialog.SAVE);
+	public static final FileDialog opener=new FileDialog((Frame)null,"Open File",FileDialog.LOAD),saver=new FileDialog((Frame)null,"Save As",FileDialog.SAVE);
 	public static editor editor;
 	public static colorCore colorCore;
 	public static toolBar toolBar;
@@ -42,6 +42,7 @@ public class Main{
 		frame.addMouseWheelListener(editor);
 		frame.addComponentListener(fileCore);
 		frame.addComponentListener(infoBar);
+		frame.addComponentListener(editor);
 		frame.setIconImage(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/windowIcon.png"))).getImage());
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);

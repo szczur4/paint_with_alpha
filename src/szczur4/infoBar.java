@@ -7,12 +7,16 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class infoBar extends JPanel implements ComponentListener,Runnable{
-	Thread thread=new Thread(this);
+	final Thread thread=new Thread(this);
 	Robot robot;
 	public int x,y,w,h;
-	public JLabel mouse=new JLabel("x: NaN, y: NaN"),selection=new JLabel("x: NaN, y: NaN, w: NaN, h: NaN"),editor=new JLabel("w: NaN, h: NaN");
-	JLabel[]icons={new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/mouse.png")))),new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/selection.png")))),new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/editor.png"))))};
-	Border border=new CompoundBorder(Main.border,new EmptyBorder(0,18,0,0));
+	final String[]tools={"pencil","fill","eraser","color picker","line","empty rectangle","full rectangle","empty elipse","full elipse"};
+	public final JLabel mouse=new JLabel("x: NaN, y: NaN");
+	public final JLabel selection=new JLabel("x: NaN, y: NaN, w: NaN, h: NaN");
+	public final JLabel editor=new JLabel("w: NaN, h: NaN");
+	public final JLabel tool=new JLabel("tool: pencil");
+	final JLabel[]icons={new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/mouse.png")))),new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/selection.png")))),new JLabel(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/editor.png"))))};
+	final Border border=new CompoundBorder(Main.border,new EmptyBorder(0,18,0,0));
 	public infoBar()throws Exception{
 		robot=new Robot();
 		setLayout(null);
@@ -30,9 +34,22 @@ public class infoBar extends JPanel implements ComponentListener,Runnable{
 		editor.setForeground(Main.fore);
 		editor.setBorder(border);
 		editor.setBounds(348,0,150,18);
+		tool.setBackground(Main.back);
+		tool.setForeground(Main.fore);
+		tool.setBorder(border);
+		tool.setBounds(497,0,150,18);
+		for(int i=0;i<3;i++){
+			icons[i].setBackground(Main.back);
+			icons[i].setSize(18,18);
+			add(icons[i]);
+		}
+		icons[0].setLocation(1,1);
+		icons[1].setLocation(150,1);
+		icons[2].setLocation(349,1);
 		add(mouse);
 		add(selection);
 		add(editor);
+		add(tool);
 		thread.start();
 	}
 	@Override public void run(){
@@ -41,6 +58,7 @@ public class infoBar extends JPanel implements ComponentListener,Runnable{
 			else editor.setText("w: NaN, h: NaN");
 			if(Main.editor.selected)selection.setText("x: "+Main.selection.x+", y: "+Main.selection.y+", w: "+Main.selection.w+", h: "+Main.selection.h);
 			else selection.setText("x: NaN, y: NaN, w: NaN, h: NaN");
+			tool.setText("tool: "+tools[Main.editor.toolId]);
 			robot.delay(50);
 		}
 	}

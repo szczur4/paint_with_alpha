@@ -7,11 +7,11 @@ import szczur4.Main;
 
 public class file extends JButton{
 	int id;
-	JButton close=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
+	final JButton close=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 		Main.fileCore.files.id=id;
 		SwingUtilities.invokeLater(Main.fileCore.files.close);
 	}});
-	JLabel name=new JLabel("");
+	final JLabel name=new JLabel("");
 	public file(int n){
 		id=n;
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){

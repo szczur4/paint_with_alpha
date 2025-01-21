@@ -7,7 +7,7 @@ import szczur4.Main;
 
 public class flip extends JPanel{
 	boolean vertical;
-	AbstractAction flipNS=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
+	final AbstractAction flipNS=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 		BufferedImage tmp=new BufferedImage(Main.selection.w,Main.selection.h,BufferedImage.TYPE_INT_ARGB);
 		tmp.createGraphics().drawImage(Main.selection.image,0,Main.selection.h,Main.selection.w,-Main.selection.h,null);
 		Main.selection.image.getGraphics().clearRect(0,0,Main.selection.w,Main.selection.h);
@@ -29,8 +29,8 @@ public class flip extends JPanel{
 		flip.setText("Flip");
 		vertical=!vertical;
 	}};
-	JLabel label=new JLabel("Mode: NS");
-	JButton flip=new JButton(flipNS),switchMode=new JButton(switchFlips);
+	final JLabel label=new JLabel("Mode: NS");
+	final JButton flip=new JButton(flipNS),switchMode=new JButton(switchFlips);
 	public flip(){
 		setLayout(null);
 		setBounds(1,1,100,41);

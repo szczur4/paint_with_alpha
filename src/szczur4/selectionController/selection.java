@@ -8,35 +8,31 @@ import szczur4.Main;
 
 public class selection extends JPanel{
 	/// tools --------------------
-	public select select=new select();
-	flip flip=new flip();
+	public final select select=new select();
+	final flip flip=new flip();
 	/// --------------------------
 	Robot robot;
-	public int x,y,w,h,x1,y1;
-	public BufferedImage image=new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB);
-	AbstractAction all=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){image=Main.editor.images.get(Main.editor.fileId);}},
-			copy,
-			cut,
-			paste,
+	public int x,y,w,h,x1,y1,id;
+	public BufferedImage image;
+	final AbstractAction all=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){select.execute(0,0,Main.editor.width,Main.editor.height,Main.editor.fileId);}},
+			copy=null,
+			paste=null,
 			left=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x--;fix();}},right=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x++;fix();}},up=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y--;fix();}},down=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y++;fix();}};
-	InputMap in=getInputMap(WHEN_IN_FOCUSED_WINDOW);
-	ActionMap am=getActionMap();
+	final InputMap in=getInputMap(WHEN_IN_FOCUSED_WINDOW);
+	final ActionMap am=getActionMap();
 	public selection()throws Exception{
 		robot=new Robot();
-		String[]s={"LEFT","RIGHT","UP","DOWN","A","D","W","S"};
+		String[]s={"LEFT","RIGHT","UP","DOWN"};
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_A,InputEvent.CTRL_DOWN_MASK),"all");
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_DOWN_MASK),"copy");
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_X,InputEvent.CTRL_DOWN_MASK),"cut");
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_V,InputEvent.CTRL_DOWN_MASK),"paste");
-		for(int i=0;i<8;i++)in.put(KeyStroke.getKeyStroke(s[i]),s[i%4]);
+		for(int i=0;i<4;i++)in.put(KeyStroke.getKeyStroke(s[i]),s[i]);
+		am.put("all",all);
 		am.put("LEFT",left);
 		am.put("RIGHT",right);
 		am.put("UP",up);
 		am.put("DOWN",down);
-		am.put("all",left);
-		am.put("copy",right);
-		am.put("cut",up);
-		am.put("paste",down);
 		setLayout(null);
 		setBackground(Main.back);
 		setBorder(Main.border);
