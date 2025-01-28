@@ -5,7 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
-import szczur4.Main;
+import szczur4.K;
 
 public class colorCore extends JPanel implements MouseListener,CaretListener{
 	Robot robot;
@@ -29,15 +29,15 @@ public class colorCore extends JPanel implements MouseListener,CaretListener{
 		Color tmp=new Color(r,g,b,a);
 		for(int i=0;i<8;i++)if(previousColors[i].color.getRGB()==tmp.getRGB()){
 			previousColors[i].setBorder(yellow);
-			previousColors[cBId].setBorder(Main.border);
+			previousColors[cBId].setBorder(K.border);
 			cBId=i;
 			colorDisplay.repaint();
-			if(secondary)Main.editor.secondary=tmp;
-			else Main.editor.primary=tmp;
+			if(secondary) K.editor.secondary=tmp;
+			else K.editor.primary=tmp;
 			return;
 		}
-		if(secondary)Main.editor.secondary=tmp;
-		else Main.editor.primary=tmp;
+		if(secondary) K.editor.secondary=tmp;
+		else K.editor.primary=tmp;
 		for(int i=6;i>=0;i--)previousColors[i+1].color=previousColors[i].color;
 		previousColors[0].color=tmp;
 		for(int i=0;i<8;i++)previousColors[i].repaint();
@@ -45,27 +45,27 @@ public class colorCore extends JPanel implements MouseListener,CaretListener{
 		colorDisplay.repaint();
 	}});
 	public final previousColor[]previousColors=new previousColor[8];
-	final CompoundBorder border=new CompoundBorder(Main.border,new EmptyBorder(-1,1,1,1));
+	final CompoundBorder border=new CompoundBorder(K.border,new EmptyBorder(-1,1,1,1));
 	public colorCore()throws Exception{
 		robot=new Robot();
 		setBounds(0,19,245,43);
-		setBorder(Main.border);
-		setBackground(Main.back);
+		setBorder(K.border);
+		setBackground(K.back);
 		setLayout(null);
 		add(colorDisplay);
-		add.setBackground(Main.back);
-		add.setForeground(Main.fore);
+		add.setBackground(K.back);
+		add.setForeground(K.fore);
 		add.setText("Add Color");
 		add.setBounds(44,23,77,16);
-		add.setBorder(Main.border);
+		add.setBorder(K.border);
 		add.setFocusable(false);
 		add(add);
 		for(int i=0;i<4;i++){
 			channels[i]=new JTextArea();
-			channels[i].setBackground(Main.back);
-			channels[i].setForeground(Main.fore);
+			channels[i].setBackground(K.back);
+			channels[i].setForeground(K.fore);
 			channels[i].setBorder(border);
-			channels[i].setCaretColor(Main.fore);
+			channels[i].setCaretColor(K.fore);
 			channels[i].setColumns(3);
 			channels[i].setBounds(16+40*(i%3),5+18*(i/3),25,16);
 			channels[i].addCaretListener(this);
@@ -73,8 +73,8 @@ public class colorCore extends JPanel implements MouseListener,CaretListener{
 			channels[i].setFocusable(false);
 			channels[i].addMouseListener(this);
 			add(channels[i]);
-			labels[i].setBackground(Main.back);
-			labels[i].setForeground(Main.fore);
+			labels[i].setBackground(K.back);
+			labels[i].setForeground(K.fore);
 			labels[i].setBounds(3+40*(i%3),5+18*(i/3),15,16);
 			add(labels[i]);
 		}

@@ -3,7 +3,7 @@ package szczur4.fileManager;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
-import szczur4.Main;
+import szczur4.K;
 
 public class fileCore extends JPanel implements ComponentListener,MouseWheelListener{
 	public int width,x;
@@ -12,31 +12,31 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 	public fileCore(){
 		setLocation(0,0);
 		setLayout(null);
-		setBorder(Main.border);
-		setBackground(Main.back);
+		setBorder(K.border);
+		setBackground(K.back);
 		add(files);
 		left=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			x+=120;
 			fixLocation();
 		}});
-		left.setIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/left.png"))));
+		left.setIcon(new ImageIcon(Objects.requireNonNull(K.class.getResource("icons/left.png"))));
 		left.addMouseWheelListener(this);
-		left.setBackground(Main.back);
+		left.setBackground(K.back);
 		left.setBounds(0,0,12,20);
 		left.setFocusable(false);
 		left.setBorder(null);
-		Main.frame.add(left);
+		K.frame.add(left);
 		right=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			x-=120;
 			fixLocation();
 		}});
-		right.setIcon(new ImageIcon(Objects.requireNonNull(Main.class.getResource("icons/right.png"))));
+		right.setIcon(new ImageIcon(Objects.requireNonNull(K.class.getResource("icons/right.png"))));
 		right.addMouseWheelListener(this);
-		right.setBackground(Main.back);
+		right.setBackground(K.back);
 		right.setBounds(0,0,12,20);
 		right.setFocusable(false);
 		right.setBorder(null);
-		Main.frame.add(right);
+		K.frame.add(right);
 	}
 	void updateIds(){for(int i=0;i<files.files.size();i++)files.files.get(i).id=i;}
 	void fixLocation(){
@@ -48,9 +48,9 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 			files.removeAll();
 			int n=files.files.size();
 			if(n==0){
-				Main.editor.images.clear();
-				Main.editor.files.clear();
-				Main.editor.addStarterThings();
+				K.editor.images.clear();
+				K.editor.files.clear();
+				K.editor.addStarterThings();
 			}
 			for(int i=0;i<n;i++){
 				files.files.get(i).setLocation(i<<7,0);
@@ -58,7 +58,7 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 				files.files.get(i).setBorder(null);
 				files.repaint();
 			}
-			try{files.fix(Main.editor.fileId);}catch(Exception ignored){}
+			try{files.fix(K.editor.fileId);}catch(Exception ignored){}
 			updateIds();
 			files.width=(files.files.size())<<7;
 			files.setSize(files.width+130,18);
@@ -81,7 +81,7 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 		}catch(Exception ignored){}
 	}
 	@Override public void componentResized(ComponentEvent ev){
-		width=Main.frame.getContentPane().getWidth();
+		width=K.frame.getContentPane().getWidth();
 		right.setLocation(width-12,0);
 		updateUI();
 	}

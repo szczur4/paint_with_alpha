@@ -1,18 +1,19 @@
 package szczur4.selectionController;
 
-import szczur4.Main;
+import szczur4.K;
 
 public class select{
-	public void execute(int x,int y,int w,int h,int id){
+	public static void execute(int x,int y,int w,int h,int id){
 		try{
-			Main.selection.image=Main.editor.images.get(Main.editor.fileId).getSubimage(x,y,w,h);
-			Main.selection.x=x;
-			Main.selection.y=y;
-			Main.selection.x1=x;
-			Main.selection.y1=y;
-			Main.selection.w=w;
-			Main.selection.h=h;
-			Main.selection.id=id;
+			K.selCore.img=K.editor.images.get(K.editor.fileId).getSubimage(x,y,w,h);
+			K.selCore.x=x;
+			K.selCore.y=y;
+			K.selCore.x1=x;
+			K.selCore.y1=y;
+			K.selCore.w=w;
+			K.selCore.h=h;
+			K.selCore.id=id;
+			K.selCore.setBounds((int)(x*K.editor.multiplier+K.editor.lX),(int)(y*K.editor.multiplier+K.editor.lY),(int)(w*K.editor.multiplier),(int)(h*K.editor.multiplier));
 		}catch(Exception ignored){}
 	}
 }

@@ -5,7 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class scalingBox extends JPanel implements MouseListener,MouseMotionListener{
-	int id,width,height,lastX,lastY;
+	int width,height,lastX,lastY;
+	final int id;
 	float multiplier;
 	boolean moved;
 	protected scalingBox(int n){
@@ -16,7 +17,7 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 		addMouseMotionListener(this);
 	}
 	public void updateLocation(int w,int h,float multiplier){
-		int W=Main.frame.getContentPane().getWidth()>>1,H=Main.frame.getContentPane().getHeight()>>1;
+		int W=K.frame.getContentPane().getWidth()>>1,H=K.frame.getContentPane().getHeight()>>1;
 		w=(int)(w*multiplier);
 		h=(int)(h*multiplier);
 		switch(id){
@@ -32,39 +33,15 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 	}
 	@Override public void mouseClicked(MouseEvent ev){}
 	@Override public void mousePressed(MouseEvent ev){
-		width=Main.editor.width;
-		height=Main.editor.height;
-		Main.editor.boxId=id;
+		width=K.editor.width;
+		height=K.editor.height;
+		K.editor.boxId=id;
 	}
 	@Override public void mouseReleased(MouseEvent ev){
-		if(moved){
-			switch(id){
-				case(0)->{
-					n();
-					w();
-				}
-				case(1)->n();
-				case(2)->{
-					n();
-					e();
-				}
-				case(3)->w();
-				case(4)->e();
-				case(5)->{
-					s();
-					w();
-				}
-				case(6)->s();
-				case(7)->{
-					s();
-					e();
-				}
-			}
-			Main.editor.resizeImage();
-			moved=false;
-		}
+		if(moved)moved=false;
 		setCursor(Cursor.getDefaultCursor());
-		Main.editor.boxId=8;
+		K.editor.resizeImage();
+		K.editor.boxId=8;
 	}
 	@Override public void mouseEntered(MouseEvent ev){
 		switch(id){
@@ -74,10 +51,10 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 			case(3),(4)->setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
 		}
 	}
-	@Override public void mouseExited(MouseEvent ev){if(Main.editor.boxId!=8)setCursor(Cursor.getDefaultCursor());}
+	@Override public void mouseExited(MouseEvent ev){if(K.editor.boxId!=8)setCursor(Cursor.getDefaultCursor());}
 	@Override public void mouseDragged(MouseEvent ev){
 		moved=true;
-		multiplier=Main.editor.multiplier;
+		multiplier=K.editor.multiplier;
 		lastX=ev.getX();
 		lastY=ev.getY();
 		switch(id){
@@ -104,12 +81,8 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 		}
 	}
 	@Override public void mouseMoved(MouseEvent ev){}
-	public void n(){Main.editor.height=height-(int)(lastY/multiplier);}
-	public void s(){Main.editor.height=height+(int)(lastY/multiplier);}
-	public void w(){Main.editor.width=width-(int)(lastX/multiplier);}
-	public void e(){Main.editor.width=width+(int)(lastX/multiplier);}
-	public void nd(){Main.infoBar.h=height-(int)(lastY/multiplier);}
-	public void sd(){Main.infoBar.h=height+(int)(lastY/multiplier);}
-	public void wd(){Main.infoBar.w=width-(int)(lastX/multiplier);}
-	public void ed(){Main.infoBar.w=width+(int)(lastX/multiplier);}
+	public void nd(){K.infoBar.h=height-(int)(lastY/multiplier);}
+	public void sd(){K.infoBar.h=height+(int)(lastY/multiplier);}
+	public void wd(){K.infoBar.w=width-(int)(lastX/multiplier);}
+	public void ed(){K.infoBar.w=width+(int)(lastX/multiplier);}
 }

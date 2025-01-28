@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.util.ArrayDeque;
 import java.util.Queue;
-import szczur4.Main;
+import szczur4.K;
 
 public class fill{
 	boolean[][]visited;
@@ -12,9 +12,9 @@ public class fill{
 	BufferedImage tmp;
 	final Queue<Point>queue=new ArrayDeque<>();
 	public void execute(int x,int y,Color c){
-		tmp=Main.editor.images.get(Main.editor.fileId);
-		width=Main.editor.width;
-		height=Main.editor.height;
+		tmp=K.editor.images.get(K.editor.fileId);
+		width=K.editor.width;
+		height=K.editor.height;
 		visited=new boolean[width][height];
 		try{before=tmp.getRGB(x,y);}catch(Exception ignored){return;}
 		if(before==c.getRGB())return;
@@ -42,6 +42,6 @@ public class fill{
 				if(!queue.contains(p))queue.add(p);
 			}
 		}
-		Main.editor.images.set(Main.editor.fileId,tmp);
+		K.editor.images.set(K.editor.fileId,tmp);
 	}
 }

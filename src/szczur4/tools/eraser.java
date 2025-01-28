@@ -1,9 +1,9 @@
 package szczur4.tools;
 
-import szczur4.Main;
+import szczur4.K;
 
 public class eraser{
 	public void execute(int x,int y){
-		try{Main.editor.images.get(Main.editor.fileId).setRGB(x,y,Main.editor.secondary.getRGB());}catch(Exception ignored){}
+		try{K.editor.images.get(K.editor.fileId).setRGB(x,y,K.editor.secondary.getRGB());}catch(Exception ignored){}
 	}
 }
