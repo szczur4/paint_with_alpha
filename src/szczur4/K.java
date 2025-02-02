@@ -1,6 +1,6 @@
 package szczur4;
+
 import java.awt.*;
-import java.io.File;
 import java.util.Objects;
 import javax.swing.border.*;
 import szczur4.bottomBar.bottomCore;
@@ -18,7 +18,7 @@ public class K{
 	public static Font f;
 	public static void main(String[]args)throws Exception{
 		GraphicsEnvironment ge=GraphicsEnvironment.getLocalGraphicsEnvironment();
-		ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,new File(Objects.requireNonNull(K.class.getResource("JetBrainsMono-Regular.ttf")).toURI())));
+		ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,Objects.requireNonNull(K.class.getResource("JetBrainsMono-Regular.ttf")).openStream()));
 		f=new Font("JetBrainsMono",Font.PLAIN,12);
 		editor=new editor();
 		top=new topCore();
