@@ -1,13 +1,12 @@
-package szczur4;
-
+package szczur4.topBar;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
 import javax.swing.border.*;
+import szczur4.K;
 import szczur4.tools.invert;
 import szczur4.tools.replaceAll;
-
 public class toolBar extends JPanel implements MouseWheelListener{
 	final JButton[]tools=new JButton[12];
 	final JButton add=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
@@ -23,9 +22,7 @@ public class toolBar extends JPanel implements MouseWheelListener{
 	final JLabel sizeLabel=new JLabel();
 	int cBId;
 	ImageIcon gridOn,gridOff;
-	final invert invert=new invert();
-	final replaceAll replaceAll=new replaceAll();
-	toolBar(){
+	public toolBar(){
 		setBorder(K.border);
 		setBounds(243,19,170,43);
 		setBackground(K.back);
@@ -46,14 +43,14 @@ public class toolBar extends JPanel implements MouseWheelListener{
 		}
 		fixBorder(0);
 		tools[9].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			if(K.editor.images.isEmpty())return;
-			if(K.editor.selected)invert.execute(K.selCore.img);
-			else invert.execute(K.editor.images.get(K.editor.fileId));
+			if(K.editor.img.isEmpty())return;
+			if(K.editor.selected)invert.execute(K.selection.img);
+			else invert.execute(K.editor.img.get(K.editor.fileId));
 		}});
 		tools[10].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			if(K.editor.images.isEmpty())return;
-			if(K.editor.selected)replaceAll.execute(K.selCore.img);
-			else replaceAll.execute(K.editor.images.get(K.editor.fileId));
+			if(K.editor.img.isEmpty())return;
+			if(K.editor.selected)replaceAll.execute(K.selection.img);
+			else replaceAll.execute(K.editor.img.get(K.editor.fileId));
 		}});
 		tools[11].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			K.editor.grid=!K.editor.grid;
@@ -78,19 +75,22 @@ public class toolBar extends JPanel implements MouseWheelListener{
 		sizeLabel.setForeground(K.fore);
 		sizeLabel.setBackground(K.back);
 		sizeLabel.setText("Size: "+K.editor.strokeSize);
-		sizeLabel.setBounds(116,5,50,16);
+		sizeLabel.setBounds(116,3,50,16);
+		sizeLabel.setFont(K.f);
 		add.setFocusable(false);
 		add.setForeground(K.fore);
 		add.setBackground(K.back);
 		add.setBorder(K.border);
 		add.setText("+");
 		add.setBounds(116,23,24,16);
+		add.setFont(K.f);
 		subtract.setFocusable(false);
 		subtract.setForeground(K.fore);
 		subtract.setBackground(K.back);
 		subtract.setBorder(K.border);
 		subtract.setText("-");
 		subtract.setBounds(142,23,24,16);
+		subtract.setFont(K.f);
 		add(sizeLabel);
 		add(add);
 		add(subtract);
@@ -100,7 +100,5 @@ public class toolBar extends JPanel implements MouseWheelListener{
 		if(cBId!=n)tools[cBId].setBorder(K.border);
 		cBId=n;
 	}
-	@Override public void mouseWheelMoved(MouseWheelEvent e){
-
-	}
+	@Override public void mouseWheelMoved(MouseWheelEvent e){}
 }

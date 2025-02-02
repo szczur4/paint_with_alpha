@@ -1,9 +1,7 @@
 package szczur4;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
 public class scalingBox extends JPanel implements MouseListener,MouseMotionListener{
 	int width,height,lastX,lastY;
 	final int id;
@@ -12,29 +10,28 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 	protected scalingBox(int n){
 		id=n;
 		setLocation(-10,-10);
-		setSize(5,5);
+		setSize(6,6);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		setOpaque(false);
 	}
-	public void updateLocation(int w,int h,float multiplier){
-		int W=K.frame.getContentPane().getWidth()>>1,H=K.frame.getContentPane().getHeight()>>1;
-		w=(int)(w*multiplier);
-		h=(int)(h*multiplier);
+	public void updateLocation(){
+		int lx=K.editor.lx-3,ly=K.editor.ly-3,w=(int)(K.editor.w*K.editor.m+1)>>1,h=(int)(K.editor.h*K.editor.m+1)>>1;
 		switch(id){
-			case(0)->setLocation(W-w/2-4,H-h/2+17);
-			case(1)->setLocation(W-2,H-h/2+17);
-			case(2)->setLocation(W+w/2-1,H-h/2+17);
-			case(3)->setLocation(W-w/2-4,H+19);
-			case(4)->setLocation(W+w/2-1,H+19);
-			case(5)->setLocation(W-w/2-4,H+h/2+20);
-			case(6)->setLocation(W-2,H+h/2+20);
-			case(7)->setLocation(W+w/2-1,H+h/2+20);
+			case(0)->setLocation(lx,ly);
+			case(1)->setLocation(lx+w,ly);
+			case(2)->setLocation(lx+(w<<1),ly);
+			case(3)->setLocation(lx,ly+h);
+			case(4)->setLocation(lx+(w<<1),ly+h);
+			case(5)->setLocation(lx,ly+(h<<1));
+			case(6)->setLocation(lx+w,ly+(h<<1));
+			case(7)->setLocation(lx+(w<<1),ly+(h<<1));
 		}
 	}
 	@Override public void mouseClicked(MouseEvent ev){}
 	@Override public void mousePressed(MouseEvent ev){
-		width=K.editor.width;
-		height=K.editor.height;
+		width=K.editor.w;
+		height=K.editor.h;
 		K.editor.boxId=id;
 	}
 	@Override public void mouseReleased(MouseEvent ev){
@@ -54,7 +51,7 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 	@Override public void mouseExited(MouseEvent ev){if(K.editor.boxId!=8)setCursor(Cursor.getDefaultCursor());}
 	@Override public void mouseDragged(MouseEvent ev){
 		moved=true;
-		multiplier=K.editor.multiplier;
+		multiplier=K.editor.m;
 		lastX=ev.getX();
 		lastY=ev.getY();
 		switch(id){
@@ -81,8 +78,8 @@ public class scalingBox extends JPanel implements MouseListener,MouseMotionListe
 		}
 	}
 	@Override public void mouseMoved(MouseEvent ev){}
-	public void nd(){K.infoBar.h=height-(int)(lastY/multiplier);}
-	public void sd(){K.infoBar.h=height+(int)(lastY/multiplier);}
-	public void wd(){K.infoBar.w=width-(int)(lastX/multiplier);}
-	public void ed(){K.infoBar.w=width+(int)(lastX/multiplier);}
+	public void nd(){K.bottom.infoBar.h=Math.max(height-(int)(lastY/multiplier),1);}
+	public void sd(){K.bottom.infoBar.h=Math.max(height+(int)(lastY/multiplier),1);}
+	public void wd(){K.bottom.infoBar.w=Math.max(width-(int)(lastX/multiplier),1);}
+	public void ed(){K.bottom.infoBar.w=Math.max(width+(int)(lastX/multiplier),1);}
 }

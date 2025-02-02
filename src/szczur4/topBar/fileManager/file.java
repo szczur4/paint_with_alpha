@@ -1,4 +1,4 @@
-package szczur4.fileManager;
+package szczur4.topBar.fileManager;
 
 import java.awt.event.*;
 import java.util.Objects;
@@ -8,16 +8,16 @@ import szczur4.K;
 public class file extends JButton{
 	int id;
 	final JButton close=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-		K.fileCore.files.id=id;
-		SwingUtilities.invokeLater(K.fileCore.files.close);
+		K.top.files.files.id=id;
+		SwingUtilities.invokeLater(K.top.files.files.close);
 	}});
 	final JLabel name=new JLabel("");
 	public file(int n){
 		id=n;
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
-			K.fileCore.files.fix(id);
+			K.top.files.files.fix(id);
 			K.editor.fileId=id;
-			K.editor.updateLocations();
+			K.editor.updateUI();
 		}});
 		setLayout(null);
 		setSize(128,18);
@@ -28,7 +28,8 @@ public class file extends JButton{
 		name.setBackground(K.back);
 		name.setForeground(K.fore);
 		name.setText(K.editor.files.get(id).getName());
-		close.setBackground(K.medium);
+		name.setFont(K.f);
+		close.setBackground(K.mid);
 		close.setBounds(0,0,18,18);
 		close.setBorder(null);
 		close.setIcon(new ImageIcon(Objects.requireNonNull(K.class.getResource("/szczur4/icons/close.png"))));

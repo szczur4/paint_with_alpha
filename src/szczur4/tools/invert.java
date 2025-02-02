@@ -3,7 +3,7 @@ package szczur4.tools;
 import java.awt.image.*;
 
 public class invert{
-	public void execute(BufferedImage img){
+	public static void execute(BufferedImage img){
 		int h=img.getHeight(),w=img.getWidth();
 		for(int y=0;y<h;y++)for(int x=0;x<w;x++){
 			int k=img.getRGB(x,y),a=(k>>24)&0xff,r=(k>>16)&0xff,g=(k>>8)&0xff,b=k&0xff;

@@ -1,47 +1,28 @@
 package szczur4.tools;
-
 import java.awt.*;
-import java.awt.image.*;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import szczur4.K;
-
 public class fill{
-	boolean[][]visited;
-	int width,height,before;
-	BufferedImage tmp;
-	final Queue<Point>queue=new ArrayDeque<>();
-	public void execute(int x,int y,Color c){
-		tmp=K.editor.images.get(K.editor.fileId);
-		width=K.editor.width;
-		height=K.editor.height;
-		visited=new boolean[width][height];
-		try{before=tmp.getRGB(x,y);}catch(Exception ignored){return;}
+	private static final Queue<Point>q=new ArrayDeque<>();
+	private static final int[][]d={{1,0},{-1,0},{0,1},{0,-1}};
+	public static void execute(int x,int y,Color c) {
+		final int w=K.editor.w,h=K.editor.h;
+		if(x<0||x>=w||y<0||y>=h)return;
+		final int before=K.editor.img.get(K.editor.fileId).getRGB(x,y);
 		if(before==c.getRGB())return;
-		queue.add(new Point(x,y));
-		int a,b;
-		while(!queue.isEmpty()){
-			a=queue.peek().x;
-			b=queue.poll().y;
+		final boolean[][]visited=new boolean[w][h];
+		q.add(new Point(x,y));
+		while(!q.isEmpty()){
+			Point p=q.poll();
+			int a=p.x,b=p.y;
+			if(visited[a][b])continue;
 			visited[a][b]=true;
-			tmp.setRGB(a,b,c.getRGB());
-			if(a+1<width&&b<height&&!visited[a+1][b]&&tmp.getRGB(a+1,b)==before){
-				Point p=new Point(a+1,b);
-				if(!queue.contains(p))queue.add(p);
-			}
-			if(a-1<width&&b<height&&a>0&&!visited[a-1][b]&&tmp.getRGB(a-1,b)==before){
-				Point p=new Point(a-1,b);
-				if(!queue.contains(p))queue.add(p);
-			}
-			if(a<width&&b+1<height&&!visited[a][b+1]&&tmp.getRGB(a,b+1)==before){
-				Point p=new Point(a,b+1);
-				if(!queue.contains(p))queue.add(p);
-			}
-			if(a<width&&b-1<height&&b>0&&!visited[a][b-1]&&tmp.getRGB(a,b-1)==before){
-				Point p=new Point(a,b-1);
-				if(!queue.contains(p))queue.add(p);
+			K.editor.img.get(K.editor.fileId).setRGB(a,b,c.getRGB());
+			for(int[]D:d){
+				final int X=a+D[0],Y=b+D[1];
+				if(X>=0&&X<w&&Y>=0&&Y<h&&!visited[X][Y]&&K.editor.img.get(K.editor.fileId).getRGB(X,Y)==before)q.add(new Point(X,Y));
 			}
 		}
-		K.editor.images.set(K.editor.fileId,tmp);
 	}
 }

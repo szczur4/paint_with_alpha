@@ -1,12 +1,10 @@
-package szczur4.colorController;
-
+package szczur4.topBar.colorController;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
 import szczur4.K;
-
 public class colorCore extends JPanel implements MouseListener,CaretListener{
 	Robot robot;
 	public final Border yellow=new LineBorder(Color.yellow);
@@ -59,6 +57,7 @@ public class colorCore extends JPanel implements MouseListener,CaretListener{
 		add.setBounds(44,23,77,16);
 		add.setBorder(K.border);
 		add.setFocusable(false);
+		add.setFont(K.f);
 		add(add);
 		for(int i=0;i<4;i++){
 			channels[i]=new JTextArea();
@@ -72,16 +71,17 @@ public class colorCore extends JPanel implements MouseListener,CaretListener{
 			channels[i].setText("0");
 			channels[i].setFocusable(false);
 			channels[i].addMouseListener(this);
+			channels[i].setFont(K.f);
 			add(channels[i]);
 			labels[i].setBackground(K.back);
 			labels[i].setForeground(K.fore);
 			labels[i].setBounds(3+40*(i%3),5+18*(i/3),15,16);
+			labels[i].setFont(K.f);
 			add(labels[i]);
 		}
 		for(int i=0;i<8;i++){
 			previousColors[i]=new previousColor();
 			previousColors[i].setLocation(171+(i%4)*18,5+18*(i/4));
-			previousColors[i].id=i;
 			add(previousColors[i]);
 		}
 	}
