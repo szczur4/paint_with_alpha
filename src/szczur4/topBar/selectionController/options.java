@@ -13,7 +13,7 @@ public class options extends JPanel implements ComponentListener{
 		setLayout(null);
 		setBackground(K.back);
 		setBorder(K.border);
-		setLocation(412,19);
+		setLocation(476,19);
 		add(select);
 		add(flip);
 		add(rotate);

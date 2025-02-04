@@ -7,15 +7,12 @@ import szczur4.bars.vertical;
 import szczur4.topBar.colorController.colorCore;
 import szczur4.topBar.fileManager.fileCore;
 public class topCore extends JPanel implements ComponentListener{
-	public final fileCore files;
-	public colorCore colors;
-	public toolBar tools;
+	public final fileCore files=new fileCore();
+	public final colorCore colors=new colorCore();
+	public final toolBar tools=new toolBar();
 	public final horizontal horiz=new horizontal();
 	public final vertical vert=new vertical();
-	public topCore()throws Exception{
-		files=new fileCore();
-		colors=new colorCore();
-		tools=new toolBar();
+	public topCore(){
 		setLayout(null);
 		setBackground(K.back);
 		setBorder(K.border);
@@ -30,7 +27,7 @@ public class topCore extends JPanel implements ComponentListener{
 	@Override public void componentResized(ComponentEvent e){
 		int w=K.frame.getContentPane().getWidth(),h=K.frame.getContentPane().getHeight()-102;
 		setSize(w,73);
-		K.selection.options.setSize(w-412,43);
+		K.selection.options.setSize(w-476,43);
 		horiz.setSize(w,12);
 		horiz.right.setLocation(w-16,0);
 		horiz.update(0);

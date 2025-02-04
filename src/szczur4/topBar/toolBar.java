@@ -24,7 +24,7 @@ public class toolBar extends JPanel implements MouseWheelListener{
 	ImageIcon gridOn,gridOff;
 	public toolBar(){
 		setBorder(K.border);
-		setBounds(243,19,170,43);
+		setBounds(307,19,170,43);
 		setBackground(K.back);
 		setLayout(null);
 		for(int i=0;i<12;i++){

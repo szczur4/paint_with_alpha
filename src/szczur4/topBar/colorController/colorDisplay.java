@@ -1,15 +1,13 @@
 package szczur4.topBar.colorController;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Objects;
 import javax.swing.*;
 import szczur4.K;
-
 public class colorDisplay extends JLabel implements MouseListener{
 	public colorDisplay(){
 		setBorder(K.border);
-		setBounds(123,5,46,34);
+		setBounds(187,5,46,34);
 		setIcon(new ImageIcon(Objects.requireNonNull(K.class.getResource("background.png"))));
 		addMouseListener(this);
 	}
@@ -35,10 +33,7 @@ public class colorDisplay extends JLabel implements MouseListener{
 		Color color;
 		if(K.top.colors.secondary)color=K.editor.secondary;
 		else color=K.editor.primary;
-		K.top.colors.channels[0].setText(color.getRed()+"");
-		K.top.colors.channels[1].setText(color.getGreen()+"");
-		K.top.colors.channels[2].setText(color.getBlue()+"");
-		K.top.colors.channels[3].setText(color.getAlpha()+"");
+		K.top.colors.fix(color);
 		repaint();
 	}
 	@Override public void mousePressed(MouseEvent ev){}

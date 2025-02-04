@@ -1,5 +1,4 @@
 package szczur4;
-
 import java.awt.*;
 import java.util.Objects;
 import javax.swing.border.*;

@@ -8,7 +8,7 @@ public class frame extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setBackground(K.back);
 		setLayout(null);
-		setMinimumSize(new Dimension(704,400));
+		setMinimumSize(new Dimension(768,400));
 		setIconImage(new ImageIcon(Objects.requireNonNull(K.class.getResource("icons/windowIcon.png"))).getImage());
 		setLocationRelativeTo(null);
 	}

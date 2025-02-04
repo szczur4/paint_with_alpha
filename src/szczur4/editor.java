@@ -232,7 +232,7 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		Graphics2D tmp=(Graphics2D)tmpImage.getGraphics();
 		if(button==1)tmp.setColor(primary);
 		else if(button==3)tmp.setColor(secondary);
-		int X=lx+(int)(mouseX*m),Y=ly+(int)(mouseY*m),x=(int)(lx/m+x1),y=(int)(ly/m+y1);
+		int X=lx+(int)(mouseX*m),Y=ly+(int)(mouseY*m),x=(int)(lx/m)+x1+tx,y=(int)(ly/m)+y1+ty;
 		switch(toolId){
 			case(0)->{
 				g.setColor(primary);
@@ -251,13 +251,13 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 				g.setColor(Color.black);
 				g.drawRect(X,Y,(int)m,(int)m);
 			}
-			case(4)->{if(pressed)tmp.drawLine(x,y,(int)(lx/m+mouseX),(int)(ly/m+mouseY));}
+			case(4)->{if(pressed)tmp.drawLine(x,y,(int)(lx/m)+mouseX+tx,(int)(ly/m)+mouseY+ty);}
 			case(5)->{if(pressed)tmp.draw(rect.execute(x,y,x2,y2));}
-			case(6)->{if(pressed)tmp.fill(rect.execute(x,y,x2+1,y2+1));}
+			case(6)->{if(pressed)tmp.fill(rect.execute(x,y,x2,y2));}
 			case(7)->{if(pressed)tmp.draw(elipse.execute(x,y,x2,y2));}
-			case(8)->{if(pressed)tmp.fill(elipse.execute(x,y,x2+1,y2+1));}
+			case(8)->{if(pressed)tmp.fill(elipse.execute(x,y,x2,y2));}
 		}
-		g.drawImage(tmpImage,0,0,(int)((w+Math.abs(lx))*m),(int)((h+Math.abs(ly))*m),null);
+		g.drawImage(tmpImage,-(int)(tx*m),-(int)(ty*m),(int)((w+Math.abs(lx))*m),(int)((h+Math.abs(ly))*m),null);
 		if(selecting&&pressed){
 			g.setStroke(dash1);
 			g.setColor(Color.black);
@@ -293,7 +293,7 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	}}
 	@Override public void mouseClicked(MouseEvent ev){
 		if(selecting||!listenForMouse)return;
-		int x=(int)((ev.getX()-lx)/m),y=(int)((ev.getY()-ly)/m);
+		int x=(int)((ev.getX()-lx-tx)/m),y=(int)((ev.getY()-ly-ty)/m);
 		button=ev.getButton();
 		Color tmp=null;
 		if(button==1)tmp=primary;
@@ -309,10 +309,8 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		if(!listenForMouse)return;
 		button=ev.getButton();
 		pressed=true;
-		x1=mouseX=(int)((ev.getX()-lx)/m);
-		y1=mouseY=(int)((ev.getY()-ly)/m);
-		x1=Math.clamp(x1,0,w);
-		y1=Math.clamp(y1,0,h);
+		x1=mouseX=(int)((ev.getX()-lx-tx)/m);
+		y1=mouseY=(int)((ev.getY()-ly-ty)/m);
 	}
 	@Override public void mouseReleased(MouseEvent ev){
 		if(!listenForMouse)return;
@@ -324,8 +322,6 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 			selecting=false;
 			selected=true;
 			int w=mouseX-x1,h=mouseY-y1;
-			w=Math.clamp(w,-x1,this.w-x1);
-			h=Math.clamp(h,-y1,this.h-y1);
 			if(w==0||h==0)select.sel.getAction().actionPerformed(null);
 			else select.execute(x1,y1,w,h,fileId);
 		}
@@ -333,15 +329,15 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 			case(4)->line.execute(x1,y1,x2,y2,tmp);
 			case(5)->emptyRect.execute(x1,y1,x2,y2,tmp);
 			case(6)->fillRect.execute(x1,y1,x2,y2,tmp);
-			case(7)->emptyElipse.execute(x1,y1,x2,y2,tmp);
-			case(8)->fillElipse.execute(x1,y1,x2,y2,tmp);
+			case(7)->emptyEli.execute(x1,y1,x2,y2,tmp);
+			case(8)->fillEli.execute(x1,y1,x2,y2,tmp);
 		}
 	}
 	@Override public void mouseEntered(MouseEvent ev){}
 	@Override public void mouseExited(MouseEvent ev){}
 	@Override public void mouseDragged(MouseEvent ev){
 		if(!listenForMouse||moving)return;
-		int x=(int)((ev.getX()-lx)/m),y=(int)((ev.getY()-ly)/m);
+		int x=(int)((ev.getX()-lx-tx)/m),y=(int)((ev.getY()-ly-ty)/m);
 		mouseX=x;
 		mouseY=y;
 		if(selecting)return;
@@ -361,8 +357,8 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 	}
 	@Override public void mouseMoved(MouseEvent ev){
 		if(!listenForMouse)return;
-		mouseX=(int)((ev.getX()-lx+m/4)/m);
-		mouseY=(int)((ev.getY()-ly+m/4)/m);
+		mouseX=(int)((ev.getX()-lx-tx)/m);
+		mouseY=(int)((ev.getY()-ly-ty)/m);
 		if(mouseX<0||mouseY<0||mouseX>w||mouseY>h){
 			K.bottom.infoBar.labels[0].setText("x: NaN, y: NaN");
 			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
