@@ -9,7 +9,7 @@ public class fill{
 	public static void execute(int x,int y,Color c) {
 		final int w=K.editor.w,h=K.editor.h;
 		if(x<0||x>=w||y<0||y>=h)return;
-		final int before=K.editor.img.get(K.editor.fileId).getRGB(x,y);
+		final int before=K.editor.img.get(K.editor.fId).getRGB(x,y);
 		if(before==c.getRGB())return;
 		final boolean[][]visited=new boolean[w][h];
 		q.add(new Point(x,y));
@@ -18,10 +18,10 @@ public class fill{
 			int a=p.x,b=p.y;
 			if(visited[a][b])continue;
 			visited[a][b]=true;
-			K.editor.img.get(K.editor.fileId).setRGB(a,b,c.getRGB());
+			K.editor.img.get(K.editor.fId).setRGB(a,b,c.getRGB());
 			for(int[]D:d){
 				final int X=a+D[0],Y=b+D[1];
-				if(X>=0&&X<w&&Y>=0&&Y<h&&!visited[X][Y]&&K.editor.img.get(K.editor.fileId).getRGB(X,Y)==before)q.add(new Point(X,Y));
+				if(X>=0&&X<w&&Y>=0&&Y<h&&!visited[X][Y]&&K.editor.img.get(K.editor.fId).getRGB(X,Y)==before)q.add(new Point(X,Y));
 			}
 		}
 	}

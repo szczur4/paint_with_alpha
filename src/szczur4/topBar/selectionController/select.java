@@ -36,7 +36,7 @@ public class select extends JPanel{
 			h*=-1;
 		}
 		try{
-			K.selection.img=K.editor.img.get(K.editor.fileId).getSubimage(x,y,w,h);
+			K.selection.img=K.editor.img.get(K.editor.fId).getSubimage(x,y,w,h);
 			K.selection.x=x;
 			K.selection.y=y;
 			K.selection.x1=x;

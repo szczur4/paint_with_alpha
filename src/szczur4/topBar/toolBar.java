@@ -6,7 +6,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import szczur4.K;
 import szczur4.tools.invert;
-import szczur4.tools.replaceAll;
+import szczur4.tools.replace;
 public class toolBar extends JPanel implements MouseWheelListener{
 	final JButton[]tools=new JButton[12];
 	final JButton add=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
@@ -24,14 +24,14 @@ public class toolBar extends JPanel implements MouseWheelListener{
 	ImageIcon gridOn,gridOff;
 	public toolBar(){
 		setBorder(K.border);
-		setBounds(307,19,170,43);
+		setBounds(343,19,170,43);
 		setBackground(K.back);
 		setLayout(null);
 		for(int i=0;i<12;i++){
 			int I=i;
 			tools[i]=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 				fixBorder(I);
-				K.editor.toolId=I;
+				K.editor.tId=I;
 			}});
 			tools[i].setBounds(5+(i%6)*18,5+(i/6)*18,16,16);
 			tools[i].setBorder(K.border);
@@ -45,12 +45,12 @@ public class toolBar extends JPanel implements MouseWheelListener{
 		tools[9].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			if(K.editor.img.isEmpty())return;
 			if(K.editor.selected)invert.execute(K.selection.img);
-			else invert.execute(K.editor.img.get(K.editor.fileId));
+			else invert.execute(K.editor.img.get(K.editor.fId));
 		}});
 		tools[10].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			if(K.editor.img.isEmpty())return;
-			if(K.editor.selected)replaceAll.execute(K.selection.img);
-			else replaceAll.execute(K.editor.img.get(K.editor.fileId));
+			if(K.editor.selected)replace.execute(K.selection.img);
+			else replace.execute(K.editor.img.get(K.editor.fId));
 		}});
 		tools[11].setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			K.editor.grid=!K.editor.grid;

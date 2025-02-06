@@ -1,15 +1,13 @@
 package szczur4.topBar.selectionController;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import szczur4.K;
-
 public class selCore extends JPanel implements MouseListener,MouseMotionListener,MouseWheelListener{
 	public int x,y,w,h,x1,y1,id,mx,my;
 	public BufferedImage img;
-	final AbstractAction all=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){select.execute(0,0,K.editor.w,K.editor.h,K.editor.fileId);}},left=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x--;fix();}},right=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x++;fix();}},up=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y--;fix();}},down=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y++;fix();}};
+	final AbstractAction all=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){select.execute(0,0,K.editor.w,K.editor.h,K.editor.fId);}},left=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x--;fix();}},right=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){x++;fix();}},up=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y--;fix();}},down=new AbstractAction(){@Override public void actionPerformed(ActionEvent e){y++;fix();}};
 	final InputMap in=getInputMap(WHEN_IN_FOCUSED_WINDOW);
 	final ActionMap am=getActionMap();
 	public final options options=new options();
@@ -36,7 +34,8 @@ public class selCore extends JPanel implements MouseListener,MouseMotionListener
 		BufferedImage tmp=img;
 		tmp=flip.execute(tmp);
 		tmp=rotate.execute(tmp);
-		g.translate(x+w*m/2,y+h*m/2);
+		g.translate(x+w*m/2-1,y+h*m/2-1);
+		g.setClip(-(int)(x+w*m/2-1),-(int)(y+h*m/2-1),K.editor.getWidth()+(int)(x+w*m/2-1)<<1,K.editor.getHeight()+(int)(y+h*m/2-1)<<1);
 		g.drawImage(tmp,-(int)(tmp.getWidth()*m/2),-(int)(tmp.getHeight()*m/2),(int)(tmp.getWidth()*m),(int)(tmp.getHeight()*m),null);
 		g.setStroke(K.editor.dash1);
 		g.setColor(Color.black);
@@ -44,13 +43,13 @@ public class selCore extends JPanel implements MouseListener,MouseMotionListener
 		g.setStroke(K.editor.dash2);
 		g.setColor(Color.yellow);
 		g.drawRect(-(int)(tmp.getWidth()*m/2),-(int)(tmp.getHeight()*m/2),(int)(tmp.getWidth()*m),(int)(tmp.getHeight()*m));
-		setBounds((int)(x+w*m/2)-(int)(tmp.getWidth()*m/2),(int)(y+h*m/2)-(int)(tmp.getHeight()*m/2),(int)(tmp.getWidth()*m),(int)(tmp.getHeight()*m));
+		setBounds((int)(x+w*m/2+K.editor.tx-tmp.getWidth()*m/2),(int)(y+h*m/2+K.editor.ty-tmp.getHeight()*m/2),(int)(tmp.getWidth()*m),(int)(tmp.getHeight()*m));
 	}
 	public BufferedImage execute(){
 		BufferedImage tmp=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
 		tmp.getGraphics().drawImage(img,0,0,null);
 		if(K.editor.doClear&&!K.editor.pasted){
-			Graphics2D g=K.editor.img.get(K.editor.fileId).createGraphics();
+			Graphics2D g=K.editor.img.get(K.editor.fId).createGraphics();
 			g.setBackground(new Color(0x0,true));
 			g.clearRect(x1,y1,w,h);
 			g.dispose();

@@ -11,7 +11,7 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 	}}),right=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 		x-=120;
 		fixLocation();
-	}}),open=new JButton(K.editor.openFile),create=new JButton(K.editor.saveAs);
+	}}),open=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){openF.execute();}}),create=new JButton(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){newF.execute();}});
 	public final files files=new files();
 	public fileCore(){
 		setLocation(78,0);
@@ -69,7 +69,7 @@ public class fileCore extends JPanel implements ComponentListener,MouseWheelList
 				files.files.get(i).setBorder(null);
 				files.repaint();
 			}
-			try{files.fix(K.editor.fileId);}catch(Exception ignored){}
+			try{files.fix(K.editor.fId);}catch(Exception ignored){}
 			updateIds();
 			files.width=(files.files.size())<<7;
 			files.setSize(files.width+130,18);

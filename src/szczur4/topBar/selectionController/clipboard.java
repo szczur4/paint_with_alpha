@@ -1,18 +1,16 @@
 package szczur4.topBar.selectionController;
-
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import javax.swing.*;
 import szczur4.K;
-
 public class clipboard extends JPanel{
 	final AbstractAction ctrlX=new AbstractAction(){@Override public void actionPerformed(ActionEvent ev){
 		if(!K.editor.selected)System.out.println("Nothing to cut");
 		else{
 			copy();
-			delete.execute(K.editor.fileId);
+			delete.execute(K.editor.fId);
 		}
 	}},ctrlC=new AbstractAction(){@Override public void actionPerformed(ActionEvent ev){
 		if(!K.editor.selected)System.out.println("Nothing to cut");
@@ -22,9 +20,16 @@ public class clipboard extends JPanel{
 		try{K.selection.img=(BufferedImage)t.getTransferData(DataFlavor.imageFlavor);}catch(Exception ex){System.err.println("Something went wrong");return;}
 		K.selection.x=0;
 		K.selection.y=0;
-		K.selection.w=K.selection.img.getWidth();
-		K.selection.h=K.selection.img.getHeight();
+		int w=K.selection.img.getWidth(),h=K.selection.img.getHeight();
+		K.selection.w=w;
+		K.selection.h=h;
 		K.selection.setBounds(0,0,K.selection.w,K.selection.h);
+		if(w>K.editor.w||h>K.editor.h){
+			BufferedImage tmp=new BufferedImage(w,h,BufferedImage.TYPE_INT_ARGB);
+			tmp.createGraphics().drawImage(K.editor.img.get(K.editor.fId),0,0,null);
+			K.editor.img.set(K.editor.fId,tmp);
+			K.editor.updateLocations();
+		}
 		K.editor.selected=true;
 		K.editor.pasted=true;
 	}};

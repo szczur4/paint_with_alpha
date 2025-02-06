@@ -27,7 +27,7 @@ public class topCore extends JPanel implements ComponentListener{
 	@Override public void componentResized(ComponentEvent e){
 		int w=K.frame.getContentPane().getWidth(),h=K.frame.getContentPane().getHeight()-102;
 		setSize(w,73);
-		K.selection.options.setSize(w-476,43);
+		K.selection.options.setSize(w-512,43);
 		horiz.setSize(w,12);
 		horiz.right.setLocation(w-16,0);
 		horiz.update(0);

@@ -21,14 +21,16 @@ public class slider extends JPanel implements MouseWheelListener{
 			@Override public void mouseClicked(MouseEvent e){}
 			@Override public void mousePressed(MouseEvent e){vl.setBackground(K.mid.darker());}
 			@Override public void mouseReleased(MouseEvent e){vl.setBackground(K.mid);}
-			@Override public void mouseEntered(MouseEvent e){vl.setBackground(K.mid);}
-			@Override public void mouseExited(MouseEvent e){vl.setBackground(K.mid.darker());}
+			@Override public void mouseEntered(MouseEvent e){}
+			@Override public void mouseExited(MouseEvent e){}
 		});
 		vl.addMouseMotionListener(new MouseMotionListener(){
 			@Override public void mouseDragged(MouseEvent e){
 				v=Math.clamp(v+e.getX()-x,0,255);
 				fix();
 				repaint();
+				K.top.colors.set();
+				K.editor.newColor=true;
 			}
 			@Override public void mouseMoved(MouseEvent e){x=e.getX();}
 		});
@@ -57,5 +59,7 @@ public class slider extends JPanel implements MouseWheelListener{
 		v=Math.clamp(v+ev.getWheelRotation(),0,255);
 		fix();
 		repaint();
+		K.top.colors.set();
+		K.editor.newColor=true;
 	}
 }

@@ -16,8 +16,9 @@ public class file extends JButton{
 		id=n;
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			K.top.files.files.fix(id);
-			K.editor.fileId=id;
-			K.editor.updateUI();
+			K.editor.fId=id;
+			K.editor.updateLocations();
+			K.editor.removeStarter();
 		}});
 		setLayout(null);
 		setSize(128,18);

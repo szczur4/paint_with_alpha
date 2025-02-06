@@ -62,6 +62,6 @@ public class horizontal extends JPanel implements MouseWheelListener{
 	@Override public void mouseWheelMoved(MouseWheelEvent ev){
 		K.editor.tx-=(int)(ev.getWheelRotation()*K.editor.m*5);
 		update(0);
-		for(int i=0;i<8;i++)K.editor.boxes[i].updateLocation();
+		K.editor.updateLocations();
 	}
 }

@@ -10,7 +10,7 @@ public class previous extends JButton{
 		setAction(new AbstractAction(){@Override public void actionPerformed(ActionEvent e){
 			if(K.top.colors.secondary)K.editor.secondary=c;
 			else K.editor.primary=c;
-			K.top.colors.colorDisplay.repaint();
+			K.top.colors.display.repaint();
 			K.top.colors.fix(c);
 		}});
 		setBorder(K.border);

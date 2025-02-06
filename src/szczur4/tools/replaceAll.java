@@ -1,11 +1,8 @@
 package szczur4.tools;
-
-import java.awt.image.*;
 import szczur4.K;
-
 public class replaceAll{
-	public static void execute(BufferedImage img){
-		int a=K.editor.primary.getRGB(),b=K.editor.secondary.getRGB();
-		for(int y=0;y<img.getHeight();y++)for(int x=0;x<img.getWidth();x++)if(img.getRGB(x,y)==a)img.setRGB(x,y,b);
+	public static void execute(){
+		int n=K.editor.img.size();
+		for(int i=0;i<n;i++)replace.execute(K.editor.img.get(i));
 	}
 }

@@ -20,7 +20,7 @@ public class files extends JPanel{
 		files.get(n).setBackground(K.mid);
 		files.get(n).setEnabled(false);
 		cBId=n;
-		K.editor.fileId=n;
+		K.editor.fId=n;
 	}
 	final Runnable close=()->{
 		K.top.files.files.files.remove(id);
@@ -30,7 +30,7 @@ public class files extends JPanel{
 		else id=Math.clamp(id,0,K.editor.img.size()-1);
 		if(!K.editor.img.isEmpty())fix(id);
 		else K.editor.addStarter();
-		K.editor.fileId=id;
+		K.editor.fId=id;
 		K.editor.selected=false;
 		K.top.files.updateUI();
 	};

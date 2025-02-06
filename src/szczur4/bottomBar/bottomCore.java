@@ -7,20 +7,20 @@ import szczur4.bars.vertical;
 public class bottomCore extends JPanel implements ComponentListener{
 	public final horizontal horiz=new horizontal();
 	public final vertical vert=new vertical();
-	public final infoBar infoBar;
+	public final info info;
 	public bottomCore()throws Exception{
-		infoBar=new infoBar();
+		info=new info();
 		setLayout(null);
 		setBorder(K.border);
 		add(horiz);
-		add(infoBar);
+		add(info);
 		K.frame.add(vert);
 	}
 	@Override public void componentResized(ComponentEvent e){
 		int w=K.frame.getContentPane().getWidth(),h=K.frame.getContentPane().getHeight()-31;
 		setBounds(0,h,w,31);
-		infoBar.setSize(w,20);
-		infoBar.labels[4].setSize(w-586,20);
+		info.setSize(w,20);
+		info.labels[5].setSize(w-685,20);
 		horiz.setSize(w,12);
 		horiz.right.setLocation(w-16,0);
 		horiz.update(1);
