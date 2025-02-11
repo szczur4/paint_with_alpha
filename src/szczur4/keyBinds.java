@@ -1,5 +1,4 @@
 package szczur4;
-
 import java.awt.event.*;
 import javax.swing.*;
 import szczur4.tools.replace;
@@ -20,6 +19,8 @@ public class keyBinds{
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_O,InputEvent.CTRL_DOWN_MASK),"open");
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),"new");
 		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_D,InputEvent.CTRL_DOWN_MASK),"clear");
+		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_W,InputEvent.CTRL_DOWN_MASK),"close");
+		in.put(KeyStroke.getKeyStroke(KeyEvent.VK_W,InputEvent.CTRL_DOWN_MASK+KeyEvent.SHIFT_DOWN_MASK),"closeAll");
 		in.put(KeyStroke.getKeyStroke("ENTER"),"confirm");
 		in.put(KeyStroke.getKeyStroke("DELETE"),"del");
 		ActionMap am=K.frame.getRootPane().getActionMap();
@@ -30,6 +31,8 @@ public class keyBinds{
 		am.put("open",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){openF.execute();}});
 		am.put("new",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){newF.execute();}});
 		am.put("clear",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){select.clear.getAction().actionPerformed(null);}});
+		am.put("close",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){K.top.files.files.close.run();}});
+		am.put("closeAll",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){while(!K.editor.files.isEmpty())K.top.files.files.close.run();}});
 		am.put("confirm",K.editor.confirm);
 		am.put("del",new AbstractAction(){@Override public void actionPerformed(ActionEvent e){if(K.editor.selected) delete.execute(K.editor.fId);}});
 	}

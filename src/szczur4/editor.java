@@ -1,5 +1,4 @@
 package szczur4;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -76,8 +75,8 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		setSize(K.frame.getContentPane().getWidth()-24,K.frame.getContentPane().getHeight()-104);
 		lx=(int)(getWidth()-w*m)>>1;
 		ly=(int)(getHeight()-h*m)>>1;
-		K.top.horiz.update(-1);
-		K.top.vert.update(-1);
+		K.top.horiz.update(0);
+		K.top.vert.update(0);
 		if(listenForMouse){
 			for(int i=0;i<8;i++)boxes[i].updateLocation();
 			K.bottom.info.w=w;
@@ -132,6 +131,14 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		for(int y=0;y<hr+1;y++)for(int x=0;x<wr+1;x++)g.drawImage(background,lx+x*48,ly+(y<<5),null);
 		g.setClip(-tx,-ty,getWidth(),getHeight());
 		g.drawImage(img.get(fId),lx,ly,(int)(w*m),(int)(h*m),null);
+		if(grid){
+			float tmp=m;
+			if(tmp<3)tmp=3;
+			g.setColor(Color.black);
+
+			for(int x=1;x<w/tmp*m;x++)g.drawLine((int)(x*tmp)+lx-tx,ly-ty,(int)(x*tmp)+lx-tx,(int)Math.min(h*m,h*tmp)+ly-ty);
+			for(int y=1;y<h/tmp*m;y++)g.drawLine(lx-tx,(int)(y*tmp)+ly-ty,(int)Math.min(w*m,w*tmp)+lx-tx,(int)(y*tmp)+ly-ty);
+		}
 		g.setStroke(dash1);
 		g.setColor(Color.black);
 		g.drawRect(lx,ly,(int)(w*m),(int)(h*m));
@@ -143,13 +150,6 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		for(int i=0;i<8;i++)g.fillRect(boxes[i].getX()-tx,boxes[i].getY()-ty,5,5);
 		g.setColor(Color.black);
 		for(int i=0;i<8;i++)g.drawRect(boxes[i].getX()-tx,boxes[i].getY()-ty,5,5);
-		if(grid){
-			float tmp=m;
-			if(tmp<3)tmp=3;
-			g.setColor(Color.black);
-			for(int x=0;x<w;x++)g.drawLine((int)(x*tmp),0,(int)(x*tmp),(int)(h*tmp));
-			for(int y=0;y<h;y++)g.drawLine(0,(int)(y*tmp),(int)(w*tmp),(int)(y*tmp));
-		}
 		BufferedImage tmpImage=new BufferedImage(w+Math.abs(lx),h+Math.abs(ly),BufferedImage.TYPE_INT_ARGB);
 		Graphics2D tmp=(Graphics2D)tmpImage.getGraphics();
 		if(button==1)tmp.setColor(primary);

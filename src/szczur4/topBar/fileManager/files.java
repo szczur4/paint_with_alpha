@@ -22,7 +22,7 @@ public class files extends JPanel{
 		cBId=n;
 		K.editor.fId=n;
 	}
-	final Runnable close=()->{
+	public final Runnable close=()->{
 		K.top.files.files.files.remove(id);
 		K.editor.img.remove(id);
 		K.editor.files.remove(id);

@@ -36,7 +36,7 @@ public class K{
 		frame.addComponentListener(bottom);
 		frame.setVisible(true);
 		opener.setMultipleMode(true);
-		for(int i=0;i<9;i++)cursors[i]=tk.createCustomCursor(new ImageIcon(Objects.requireNonNull(K.class.getResource("icons/icon"+i+".png"))).getImage(),new Point(0,20),"tool"+i);
+		for(int i=0;i<9;i++)cursors[i]=tk.createCustomCursor(new ImageIcon(Objects.requireNonNull(K.class.getResource("icons/icon"+i+".png"))).getImage(),new Point(3,27),"tool"+i);
 		new keyBinds();
 	}
 }
