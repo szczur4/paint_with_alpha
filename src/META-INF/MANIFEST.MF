@@ -1,1 +1,1 @@
-Main-Class: szczur4.K
+Main-Class: szczur4.paint.paint
