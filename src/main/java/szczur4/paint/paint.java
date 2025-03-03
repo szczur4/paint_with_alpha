@@ -7,7 +7,7 @@ import szczur4.paint.leftBar.leftCore;
 import szczur4.paint.topBar.selectionController.selCore;
 import szczur4.paint.topBar.topCore;
 public class paint{
-	public static Color back,medium,fore;
+	public static Color back=new Color(0x171717),medium=new Color(0x3d3d3d),fore=new Color(0xb0b0b0);
 	public static Border border;
 	public static final FileDialog opener=new FileDialog((Frame)null,"Open File",FileDialog.LOAD);
 	public static selCore selection;
