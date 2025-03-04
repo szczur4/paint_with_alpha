@@ -1,0 +1,18 @@
+{
+	"theme":"dark",
+	"themes":{
+		"dark":{
+			"back":"#171717",
+			"medium":"#3d3d3d",
+			"fore":"#b0b0b0"
+		},
+		"true-dark":{
+			"back":"#000000",
+			"medium":"#303030",
+			"fore":"#a0a0a0"
+		},
+		"custom":{
+
+		}
+	}
+}
