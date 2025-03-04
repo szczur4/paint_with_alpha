@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="scrollLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../scrollBars/out/production/scrollBars/scrollLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../scrollBars/src" />
+    </SOURCES>
+  </library>
+</component>

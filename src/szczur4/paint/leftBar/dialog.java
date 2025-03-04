@@ -1,4 +1,5 @@
 package szczur4.paint.leftBar;
+
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.File;

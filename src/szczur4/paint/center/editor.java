@@ -115,7 +115,7 @@ public class editor extends JPanel implements MouseListener,MouseMotionListener,
 		if(img.isEmpty())return;
 		int wr=(int)(w*m/3f)>>4,hr=H>>5;
 		g.clipRect(lx,ly,paint.center.fixer.getWidth(),paint.center.fixer.getHeight());
-		//for(int y=0;y<hr+1;y++)for(int x=0;x<wr+1;x++)g.drawImage(background,x*48,(y<<5),null);
+		for(int y=0;y<hr+1;y++)for(int x=0;x<wr+1;x++)g.drawImage(background,x*48,(y<<5),null);
 		g.drawImage(img.get(fId),0,0,W,H,null);
 		if(grid){
 			float tmp=m;
